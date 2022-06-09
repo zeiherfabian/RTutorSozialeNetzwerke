@@ -1,0 +1,1823 @@
+
+```{r 'check_ps', include=FALSE}
+
+user.name = 'ENTER A USER NAME HERE'
+```
+
+
+
+## Exercise Überblick
+
+Willkommen!
+
+Du stehst am Anfang eines interaktiven RTutor Problemsets, welches Teil meiner Masterarbeit an der Universität Ulm ist. Grundlage hierfür ist der Artikel *Social Networks as Contract Enforcement: Evidence from a Lab Experiment in the Field* von Arun G. Chandrasekhar, Cynthia Kinnan und Horacio Larreguy. Den Link zum Artikel findest du <a href="https://www.aeaweb.org/articles?id=10.1257/app.20150057" target="_blank">hier</a>.
+
+Fehlende staatliche Institutionen haben zur Folge, dass sich einzelne Individuen nicht mehr an Verträge halten. Für sie ist es sinnvoll, durch opportunistisches Verhalten von Vereinbarungen abzuweichen, um finanzielle Vorteile zu erlangen. Bereits Friedman (1971, S. 1 f.) stellte fest, dass die Kooperation der Vertragspartner trotz fehlender staatlicher Durchsetzung erreicht werden kann. Voraussetzung hierfür ist allerdings, dass die Partner mehrfach miteinander interagieren. 
+In diesem Problemset werden wir untersuchen, ob auch soziale Netzwerke das Ausmaß der Kooperation in diesem Fall beeinflussen. Es kann vermutet werden, dass sich nahestehende Personen Vereinbarungen eher einhalten, als Personen, welche sich nicht bekannt sind. Auch die Bedeutung einer Person im Netzwerk, zum Beispiel innerhalb eines Dorfes, könnte ein Ansatzpunkt sein, Kooperation trotz fehlender staatlicher Durchsetzung zu erklären.
+
+Der Artikel befasst sich mit einem Experiment, in dem die Teilnehmer dazu aufgefordert wurden, drei Spiele mit wechselnden Partnern zu bestreiten. Dabei wurde eine Situation simuliert, in der nur eine der beiden Personen einen Geldbetrag erhielt. Die Beteiligten konnten jedoch im Voraus Vereinbarungen treffen, um sich gegenseitig Geld zu versichern. Abhängig vom Spiel waren die Personen verpflichtet, diese Vereinbarungen zu erfüllen. 
+
+Zu Beginn des Problemsets werden die im Experiment durchgeführten Spiele vorgestellt. Dabei erhältst du bereits einen ersten Einblick über die verwendeten Daten. Im Anschluss wird näher auf die Teilnehmer eingegangen. Es wird untersucht, ob sich die Kooperation der Partner in den Spielen unterschied. Es stellt sich danach die Frage, ob kooperatives Verhalten der Partner trotz fehlender Durchsetzung der Verträge anhand von Netzwerkdaten begründet werden kann.
+
+### Inhalt
+
+1. Das Experiment
+
+  1.1 Zwei Bauern
+    
+  1.2 Datenüberblick
+
+2. Die Teilnehmer
+
+3. Die Spiele im Vergleich
+
+4. Analyse von Netzwerken
+
+5. Netzwerkdaten
+
+6. Einstieg in lineare Regressionen
+
+7. Soziale Netzwerke und Vertragserfüllung
+
+  7.1 Analyse
+  
+  7.2 Robustheitscheck
+  
+8. Sparen
+
+9. Schlussfolgerung
+
+10. Zusatzaufgabe
+
+11. Quellverzeichnis
+
+Es ist nicht notwendig, die Kapitel in der vorgegebenen Reihenfolge zu lösen. Du kannst deshalb auch einzelne überspringen. Dies ist allerdings nicht zu empfehlen, da du bei der Bearbeitung vieler Aufgaben auf zuvor erlangtes Wissen zurückgreifen musst. Willst du die Aufgaben innerhalb eines Kapitels lösen, so muss dies in der vorgegebenen Reihenfolge geschehen. Du kannst mit der Bearbeitung einer Aufgabe durch Klicken von `edit` starten. Gib deinen Code im Anschluss ein. Durch das Klicken von `check` bestätigst du deine Eingaben und dir wird, wenn diese korrekt sind, das Ergebnis angezeigt. Ist dies nicht der Fall, hast du die Möglichkeit, durch Klicken des `hint` Buttons einen Hinweis oder durch `solution` die Lösung des Problems zu erlangen. Zusätzlich beinhaltet das Problemset einige Quizfragen, welche dein erlerntes Wissen noch einmal prüfen. Machst du deine Sache gut, kannst du im Verlauf des Problemsets Auszeichnungen (`awards`) erhalten.
+
+Die Arbeit ist auf Deutsch verfasst. Der zugrunde liegende Artikel wurde jedoch in englischer Sprache veröffentlicht. Die verwendeten Variablen der Datensätze haben somit auch eine englische Bezeichnung. Es wurde darauf verzichtet, sämtliche Variablennamen anzupassen. Im Problemset sind Schaubilder in englischer Sprache beschriftet.
+
+Viel Spaß bei der Bearbeitung der Aufgaben.
+
+## Exercise 1: Das Experiment
+
+Bevor du mit der Analyse der Daten starten kannst, ist es von Bedeutung, das Experiment und dessen Aufbau kennenzulernen. Einen ersten Einblick in die drei im Experiment durchgeführten Spiele erhältst du daher in diesem Kapitel. Dafür wird unter anderem der für die spätere Analyse verwendete Datensatz vorgestellt.
+
+Im ersten Abschnitt der Aufgabe wird das Experiment anhand des Beispiels zweier Bauern erläutert. Dies dient als Einstieg in die Thematik. Das Beispiel ermöglicht es, grundlegende Abläufe des Experiments aufzuzeigen. 
+
+Im zweiten Abschnitt wird dir das Experiment anhand des Datensatzes nähergebracht. Du bekommst nun selbst die Möglichkeit, einige Aufgaben zu lösen. Am Ende des Kapitels erfolgt eine Betrachtung der einzelnen Spiele für eine ausgewählte Person.
+
+## Exercise 1.1: Zwei Bauern
+
+Das Experiment lässt sich anhand des folgenden Beispiels konkret erklären. Dieses wurde ebenfalls verwendet, um den Teilnehmern des Experiments den Kontext der Spiele zu vermitteln. Die vereinfachte Darstellung diente zum besseren Verständnis (vgl. Chandrasekhar et al., 2018, S. 49).
+
+Zwei Bauern bewirtschaften jeweils ein Feld, mit dessen Ertrag sie ihren Lebensunterhalt verdienen. Dabei sind die Voraussetzungen für beide Landwirte identisch. Ihre Böden sind gleich nährstoffreich und sie verfügen über dasselbe Saatgut. Dieses säen sie am Anfang des Jahres auf ihren Feldern aus. Nun warten sie auf die Ernte im Herbst.
+Da eine erfolgreiche Ernte jedoch auch von nicht kontrollierbaren Faktoren wie dem Wetter abhängt, hoffen beide auf genügend Regen. Kommt es in der Zeit vor der Ernte zu einer Dürre, droht beiden Bauern ein kompletter Ernteausfall.
+Nehmen wir an, für einen der Bauern kommt es tatsächlich zur Katastrophe. Seine Ernte wird durch das Ausbleiben des Regens komplett vernichtet. Dies bedeutet seinen finanziellen Ruin. Er kann in diesem Jahr keine Erträge aus seiner Arbeit erwirtschaften. 
+Da im Voraus nicht sicher ist, wen der Ernteausfall betrifft, nutzen die Landwirte die Möglichkeit, bereits im Frühjahr Absprachen zu treffen. Sie versprechen sich gegenseitig eine Geldsumme, welche sie im Falle einer guten Ernte an den jeweils anderen weitergeben. Somit sichern sich die Landwirte ab, sodass sie davon ausgehen können, trotz Ernteausfall ein Einkommen zu erzielen. Weitet man das Beispiel auf einen Zeitraum von mehreren Jahren aus, in denen jeweils einer der beiden Bauern von der Dürre betroffen ist, können die Absprachen dazu beitragen, Einkommensschwankungen zwischen den Extremen (Missernte und erfolgreiche Ernte) abzuschwächen.
+
+Im Experiment werden von den Teilnehmern drei Spiele bestritten. Diese unterscheiden sich in der Durchsetzbarkeit von Verträgen sowie in der Möglichkeit, einen Teil des Einkommens zu sparen und in späteren Perioden auszugeben. Bleibt man bei dem Beispiel der beiden Bauern, so können die drei Spiele folgendermaßen erklärt werden:
+
+**Spiel 1: Enforcement:** Die Bauern treffen im Frühjahr jedes Jahres Absprachen darüber, mit welchen Beträgen sie sich unterstützen. Dabei kann sich ihre Höhe jeweils unterscheiden. Die getroffenen Absprachen beziehungsweise Verträge sind bindend. Beide Bauern haben nicht die Möglichkeit, von den Vereinbarungen abzuweichen, da eine Institution die Vertragserfüllung überwacht und durchsetzt. Bevor ein neues Erntejahr beginnt, haben die Bauern alle Transfers durchgeführt und das erhaltene beziehungsweise erwirtschaftete Geld ausgegeben.
+
+**Spiel 2: No Enforcement:** Die Bauern haben im Frühjahr eine Absprache darüber getroffen, welchen Betrag derjenige, der aufgrund der Dürre keine Ernte erzielt, vom anderen erhält. Allerdings fehlt eine Institution, welche die Vertragserfüllung überwacht. Daher ist es für den Bauern mit der guten Ernte möglich, von der bestehenden Vereinbarung abzuweichen. Im Herbst kann er unabhängig von seinem Versprechen entscheiden, welchen Geldbetrag er dem anderen gibt. Hierbei ist es den Bauern ebenfalls nicht erlaubt, Geldbeträge für ein neues Jahr anzusparen. Das erhaltene sowie erwirtschaftete Geld muss vor Ablauf des Jahres ausgegeben werden.
+
+**Spiel 3: No Enforcement, Savings:** Wieder haben die Bauern die Absprache getroffen, sich bei Missernte gegenseitig zu unterstützen. Auch in diesem Szenario fehlt eine Institution, welche die Durchsetzung des Vertrags garantiert. Nachdem der Transfer zwischen den Bauern erfolgt ist, haben beide die Möglichkeit zu entscheiden, welchen Betrag des erhaltenen beziehungsweise erwirtschafteten Einkommens sie für das nächste Jahr ansparen möchten. Somit haben sie im kommenden Jahr die Möglichkeit, Einkommensausfälle selbst zu kompensieren.
+
+<img src="Landwirte.png" style="width: 70%; height: 70%">
+
+*Abbildung 1.1: Das Experiment im Kontext von zwei Bauern (Quelle: Eigene Darstellung)*
+
+## Exercise 1.2: Datenüberblick
+
+Nachdem du bereits das Experiment anhand des Beispiels zweier Bauern kennengelernt hast, ist es nun von Interesse, den für die Analyse verwendeten Datensatz `exp_data.rds` zu betrachten. Dieser enthält alle während des Experiments aufgezeichneten Informationen. In diesem Abschnitt wird daher der Datensatz vorgestellt. Du erhältst eine Übersicht über zentrale Variablen, welche während des Experiments erfasst wurden.
+
+Falls du Interesse hast, den Datensatz von Chandrasekhar, Kinnan und Larreguy (2018) herunterzuladen, klicke <a href="https://www.aeaweb.org/articles?id=10.1257/app.20150057" target="_blank">hier</a>. Ich habe das Format des Datensatzes geändert, einige Variablen erstellt sowie Variablennamen angepasst. Du kannst diese in meinem <a href="https://github.com/zeiherfabian/RTutorSozialeNetzwerke" target="_blank">Github Repository</a> einsehen. Die entsprechende Datei hat den Namen `Datensatz_Anpassungen.Rmd`. In späteren Kapiteln wirst du zusätzlich den Datensatz `reg_data.rds` kennenlernen. Dieser enthält eine Teilmenge aller Beobachtungen des Datensatzes `exp_data.rds`.
+
+Bevor du einen Überblick über die verwendeten Daten erhältst, ist es notwendig, die Daten zu laden. Da diese im Format `.rds` gespeichert sind, muss dazu der Befehl `readRDS()` angewandt werden. 
+
+**Aufgabe:** Lade den Datensatz `exp_data.rds` mithilfe des Befehls `readRDS()`. Speichere zudem die geladenen Daten in der Variable `dat` ab.
+
+```{r "4_1"}
+# Gib deinen Code hier ein:
+```
+
+
+Nachdem der Datensatz in der Variable `dat` abgespeichert wurde, soll herausgefunden werden, wie groß der Datensatz ist. Dazu können die Anzahl der Zeilen und Spalten mithilfe des Befehls `dim()` ermittelt werden. 
+
+**Aufgabe:** Ermittle mithilfe des Befehls `dim()` die Anzahl der Zeilen und Spalten von `dat`.
+
+```{r "4_2"}
+# Gib deinen Code hier ein:
+```
+
+Der Datensatz verfügt über 129 Spalten und 14070 Zeilen. Jede Zeile bezieht sich auf eine Beobachtung während des Experiments. Insgesamt enthält der Datensatz 129 Variablen.
+
+Mithilfe des Befehls `select()` aus dem Paket `dplyr` ist es möglich, den Datensatz `dat` auf einige wenige Variablen einzugrenzen. Für die Erläuterung des Experiments ist die Betrachtung aller enthaltenen Variablen nicht notwendig. Daher werden wir den Datensatz zunächst auf 14 Variablen beschränken. Im Anschluss kann der Befehl `sample_n(data,n)` dazu verwendet werden, um `n` zufällig gewählte Zeilen des Datensatzes darzustellen. Eine Einführung in das Paket `dplyr` findest du in der Infobox.
+
+```{r eval=FALSE}
+# Run for additional info in the Viewer pane
+info("dplyr")
+```
+
+**Aufgabe:** Verwende den Befehl `sample_n()`, um zehn zufällig bestimmte Zeilen des Datensatzes `dat` betrachten zu können.
+
+```{r "4_3"}
+# Das Paket "dplyr" wird geladen.
+library(dplyr)
+# Mit dem Befehl "select()" wird eine Auswahl relevanter Variablen getroffen.
+dat=select(dat,id,id_partner,village,game_name,order,round,endowment,promise_from_partner,promise_to_partner,income,transfer_from_partner,transfer_to_partner,savings,consumption)
+# Nutze den Befehl "sample_n()", um zehn Zeilen des Datensatzes anzeigen zu lassen. Gib deinen Code hier ein:
+```
+
+Die Spieler können mithilfe der Variablen `id` und `id_partner` identifiziert werden. Die Person, welche mit der Variable `id` gekennzeichnet wird, ist dabei die betrachtete Person für die jeweilige Zeile des Datensatzes. Einige Variablen, wie zum Beispiel `endowment`, `income`, `savings` oder `consumption` beziehen sich explizit auf diese Person. Die Beobachtungen einer Spielrunde finden sich jedoch in zwei Zeilen des Datensatzes wieder. Grund dafür ist, dass die Ergebnisse auch aus der Sicht des zweiten Spielers notiert wurden. 
+
+Da beide Personen aus demselben Dorf stammen, ordnet die Variable `village` den Personen eine Identifikationsnummer für ihren Wohnort zu.
+
+Aus welchem der drei Spiele die Beobachtung stammt, kann anhand der Variable `game_name` ermittelt werden. Ein Spieler bestritt jedes der drei Spiele mit wechselnden Partnern. Die Reihenfolge, in der die Spiele durchgeführt wurden, war nicht festgelegt. Sie wird anhand der Variable `order` beschrieben. Das Schema, in dem die drei Spiele bestritten wurden, wird durch Abbildung 1.2 noch einmal verdeutlicht.
+
+<img src="Spielreihenfolge.png" style="width: 40%; height: 40%">
+
+*Abbildung 1.2: Spielreihenfolge im Experiment (Quelle: Eigene Darstellung in Anlehnung an Chandrasekhar et al. (2018, S. 50))*
+
+
+Quiz: Wie viele mögliche Spielreihenfolgen gibt es für die Durchführung aller drei Spiele?
+
+[1]: 6
+[2]: 9
+[3]: 12
+
+```{r eval=FALSE}
+# Run line to answer the quiz above
+answer.quiz("Spielreihenfolge")
+```
+
+Jede Zeile des Datensatzes enthält Informationen zu einer Runde (`round`) der drei durchgeführten Spiele. Die Anzahl der Runden eines Spiels wurden zufällig bestimmt. Bevor das Experiment startete, teilte man den Teilnehmern jedoch mit, dass die erwartete Anzahl der Runden für jedes Spiel sechs beträgt (vgl. Chandrasekhar et al., 2018, S. 49).  
+
+Vor Beginn jedes Spiels wurden einem der beiden Partner 60 Rupien und dem anderen 30 Rupien ausgezahlt (`endowment`). Die Auszahlungen erfolgten im Experiment in Form von Token im Wert von jeweils 10 Rupien. Die Ziehung einer Kugel aus einem Beutel bestimmte die jeweilige Höhe des Betrags. Dies verfolgte den Zweck, das Anfangsvermögen zwischen den Partnern unterschiedlich zu verteilen (vgl. Chandrasekhar et al., 2018, S. 49). 
+
+In jeder Runde des Spiels bestimmte der Zufall, welche der beiden Personen eine hohe Auszahlung (`income`) über 250 Rupien (25 Token) erhielt. Dies entsprach einem Lohn von zwei Tagen. Der jeweilige Partner ging leer aus. Zuvor konnten sich beide Partner darüber austauschen, welchen Betrag sie sich gegenseitig im Fall der hohen Auszahlung versprechen. Die Variablen `promise_to_partner` und `promise_from_partner` halten die Ergebnisse der Verhandlungen fest. Die versprochenen Beträge konnten sich unterscheiden. Durch die Variablen `transfer_to_partner` und `transfer_from_partner` wurde der tatsächliche Transfer nach Auszahlung notiert. Die Transfers erfolgten durch die Übergabe einer Anzahl an Token (vgl. Chandrasekhar et al., 2018, S. 49).
+
+Im Spiel **No Enforcement, Savings** war es möglich, Rücklagen für die nächsten Runden eines Spiels zu bilden. Die Variable `savings` beschreibt diesen ersparten Geldbetrag, den sich der betrachtete Spieler aufhob. Für den gesparten Betrag gab es keine Zinsen. Wurde das Spiel allerdings beendet, so waren die Ersparnisse verloren.
+
+Am Ende jeder Runde wurde die Anzahl der Token notiert, welche jeder Spieler besaß. Diese wurden im Anschluss eingesammelt ("konsumiert"). Im Spiel **No Enforcement, Savings** hatten die Spieler zusätzlich die Möglichkeit, einen Teil der Token zu behalten. Die Variable `consumption` beschreibt den Konsum der betrachteten Person in einer Runde. Deren Wert lässt sich anhand der Variablen `income`, `transfer_to_partner`, `transfer_from_partner` und `savings` bestimmen. Abbildung 1.3 zeigt, wie die Werte der Variable `consumption` berechnet werden können. Es bleibt zu erwähnen, dass in der ersten Runde zusätzlich die Werte der Variable `endowment` für die Berechnung berücksichtigt werden müssen.
+
+<img src="Konsum.png" style="width: 40%; height: 40%">
+
+*Abbildung 1.3: Berechnung des Konsums (Quelle: Eigene Darstellung in Anlehnung an Chandrasekhar et al. (2018, S. 50))*
+
+Nach Durchführung aller Spiele wurde durch Zufall für jede Person eine der gespielten Runden ermittelt und der konsumierte Geldbetrag zusammen mit der Teilnahmegebühr ausbezahlt. Geht man davon aus, dass die Teilnehmer sich risikoavers verhielten, hatten die Teilnehmer den Anreiz, diesen Betrag im Verlauf der Runden möglichst konstant zu halten (vgl. Chandrasekhar et al., 2018, S. 49 f.).
+
+## Ein Beispiel
+
+Nachdem du bereits den Kontext des Experiments sowie den verwendeten Datensatz kennengelernt hast, möchten wir uns nun einem konkreten Beispiel widmen und den Verlauf der einzelnen Spiele für eine Person betrachten. Für das Beispiel ist die Person `117` (Ausprägung der Variable `id`) gewählt. Zu jedem Spiel kannst du anschließend einige Fragen beantworten.
+
+### Spiel 1: Enforcement:
+
+Mithilfe des Befehls `filter()` ist es möglich, nach ausgewählten Zeilen des Datensatzes zu filtern. Der Befehl kann verwendet werden, um die Beobachtungen des Spiels **Enforcement** für die Person `117` anzuzeigen. Dazu muss der Datensatz neben der Person (`id`) auch für das Spiel gefiltert werden. Dieses wird anhand der Variable `game_name` identifiziert. 
+
+**Aufgabe:** Fülle die Lücken im Code. Anschließend kann der Datensatz `game1` angezeigt werden.
+
+```{r "4_4"}
+game1=filter(dat,id==___,___=="Enforcement")
+game1
+```
+
+Es wird ersichtlich, dass Person `117` das Spiel gegen den Partner `1715401` bestritt. Beide Personen stammen aus Dorf 17. Das Spiel wurde als zweites der drei Spiele durchgeführt und dauerte insgesamt sieben Runden, bevor es beendet wurde.
+
+Beantworte anhand der Daten nun folgende Fragen:
+
+
+Quiz: In der ersten Runde des Spiels erzielte die Person `117` kein Einkommen. Wie hoch war das Einkommen des Partners?
+
+[1]: 200 Rupien
+[2]: 250 Rupien
+[3]: 0 Rupien
+
+```{r eval=FALSE}
+# Run line to answer the quiz above
+answer.quiz("Enforcement 1")
+```
+
+
+Quiz: In wie vielen Runden erzielte Person `117` das hohe Einkommensniveau?
+
+[1]: 3
+[2]: 4
+[3]: 2
+
+```{r eval=FALSE}
+# Run line to answer the quiz above
+answer.quiz("Enforcement 2")
+```
+
+
+Quiz: Wie hoch war der höchste Transfer von Person `117` an ihren Partner?
+
+[1]: 70 Rupien
+[2]: 80 Rupien
+[3]: 50 Rupien
+
+```{r eval=FALSE}
+# Run line to answer the quiz above
+answer.quiz("Enforcement 3")
+```
+
+
+Quiz: Der Konsum (`consumption`) beider Partner zusammen beträgt 250 Rupien pro Runde. Stimmt diese Aussage?
+
+[1]: Ja
+[2]: Nein
+
+```{r eval=FALSE}
+# Run line to answer the quiz above
+answer.quiz("Enforcement 4")
+```
+
+Wir möchten nun den Verlauf der Runden aus Sicht des Partners betrachten. Dies ist jedoch nicht so einfach möglich, da sich die Variablen `id` und `id_partner` im Datensatz für eine Person nicht entsprechen. Beide Variablen ordnen einer Person eine unterschiedliche Identifikationsnummer zu. Es ist daher nicht möglich, die Variable `id` nach der Person `1715401` zu filtern, um den Verlauf der Spiele aus Sicht des Partners von Person `117` zu betrachten. Nach einiger Recherche habe ich herausgefunden, dass der Person `1715401` (`id_partner`) für die Variable `id` der Wert `1417` zugeordnet wurde.
+
+**Aufgabe:** Durch Drücken von **check** kannst du den Verlauf des Spiels aus Sicht des Partners von Person `117` betrachten. 
+
+```{r "4_5"}
+game1_partner=filter(dat,id==1417,game_name=="Enforcement")
+game1_partner
+```
+
+### Spiel 2: No Enforcement:
+
+Wir möchten nun das Spiel **No Enforcement** aus Sicht von Person `117` betrachten.
+
+**Aufgabe:** Der Code ist bereits gegeben. Drücke **check**, um ihn auszuführen.
+
+```{r "4_6"}
+game2=filter(dat,id==117,game_name=="No Enforcement")
+game2
+```
+
+Das Spiel **No Enforcement** wurde als erstes der drei Spiele durchgeführt. Da sich der Wert der Variable `id_partner` verändert hat, wird noch einmal klar, dass zwischen den Spielen die Partner getauscht wurden.
+
+Beantworte anhand der Daten nun folgende Fragen:
+
+
+Quiz: In der ersten und zweiten sowie in der vierten und fünften Runde des Spiels erhielt Person `117` das hohe Einkommen. Allerdings hielt sie sich nicht immer an die Versprechen an ihren Partner und transferierte nur einen Teil des versprochenen Betrags. In welcher Runde entsprach der versprochene Wert auch dem tatsächlich transferierten Betrag?
+
+[1]: 1
+[2]: 4
+[3]: 6
+
+```{r eval=FALSE}
+# Run line to answer the quiz above
+answer.quiz("No Enforcement 1")
+```
+
+
+Quiz: In der dritten und letzten Runde des Spiels erhielt Person `117` kein Einkommen. Hielt sich deren Partner an seine Versprechen?
+
+[1]: Ja
+[2]: Nein
+
+```{r eval=FALSE}
+# Run line to answer the quiz above
+answer.quiz("No Enforcement 2")
+```
+
+### Spiel 3: No Enforcement, Savings:
+
+**Aufgabe:** Drücke **check**, um die Beobachtungen für die Person `117` und das Spiel **No Enforcement, Savings** zu betrachten.
+
+```{r "4_7"}
+game3=filter(dat,id==117,game_name=="No Enforcement, Savings")
+game3
+```
+
+Beantworte anhand der Daten nun folgende Fragen:
+
+
+Quiz: Das Spiel **No Enforcement, Savings** wurde als zweites der drei Spiele ausgeführt. Ist diese Aussage korrekt?
+
+[1]: Ja
+[2]: Nein
+
+```{r eval=FALSE}
+# Run line to answer the quiz above
+answer.quiz("No Enforcement, Savings 1")
+```
+
+
+Quiz: Anhand der Variable `savings` wird für Person `117` der zurückgelegte Betrag für die nächste Runde dokumentiert. Ist ersichtlich, ob auch der Partner Rücklagen für zukünftige Runden gebildet hat?
+
+[1]: Ja
+[2]: Nein
+
+```{r eval=FALSE}
+# Run line to answer the quiz above
+answer.quiz("No Enforcement, Savings 2")
+```
+
+
+## Exercise 2: Die Teilnehmer
+
+In diesem Kapitel möchten wir einen Blick auf die Teilnehmer des Experiments werfen. Wir werden zunächst herausfinden, in wie vielen Dörfern das Experiment durchgeführt wurde. Auch die Anzahl der teilnehmenden Personen ist von Interesse. Im Anschluss erfolgt die Betrachtung einiger personenspezifischer Variablen wie dem Alter, dem Geschlecht und der Bildung einer Person. 
+
+Um mit der Bearbeitung der Aufgaben zu starten, muss zunächst der Datensatz erneut geladen werden. 
+
+**Aufgabe:** Drücke **check**, um den Datensatz `exp_data.rds` zu laden und in `dat` abzuspeichern.
+
+```{r "5_1"}
+dat=readRDS("exp_data.rds")
+```
+
+Wie du bereits aus dem letzten Kapitel weißt, stammen beide am Experiment teilnehmenden Personen (`id` und `id_partner`) aus einem Dorf. Die Variable `village` ordnet dem jeweiligen Wohnort beider Personen eine Ganzzahl zu. Zunächst möchten wir herausfinden, in wie vielen Dörfern das Experiment durchgeführt wurde. Dazu kann der Befehl `n_distinct()` aus dem Paket `dplyr` verwendet werden. Dieser liefert die Anzahl der verschiedenen Ausprägungen einer Variable. 
+
+**Aufgabe:** Führe den Befehl `n_distinct()` für die Variable `village` aus.
+
+```{r "5_2"}
+# Ermittle die Anzahl der Dörfer.
+```
+
+Die am Experiment teilnehmenden Personen stammen aus insgesamt 34 Dörfern. Alle befinden sich im indischen Bundesstaat Karnataka in der Nähe der Stadt Bengalore (vgl. Chandrasekhar et al., 2018, S. 48).
+
+Wir möchten nun für jedes Dorf wissen, wie viele Personen am Experiment teilnahmen. Bereits in der letzten Aufgabe hast du den Befehl `n_distinct()` verwendet, um die Anzahl der Dörfer im Experiment zu bestimmen. Dieser kann in der folgenden Aufgabe erneut verwendet werden. Durch den Befehl `group_by()` kannst du festlegen, nach welcher Variable eine Gruppierung erfolgen soll. Der Befehl `summarise()` liefert eine Zusammenfassung für jede Gruppe.
+
+**Aufgabe:** Ersetze die Platzhalter mit der passenden Variable. Wähle zwischen `id` und `village`.
+
+```{r "5_3"}
+# Ermittle die Anzahl der Personen für jedes der Dörfer.
+dat %>%
+  group_by(___) %>%
+  summarise(n_person=n_distinct(___))
+```
+
+Pro Dorf wurden 20 Personen ausgewählt, um am Experiment teilzunehmen. Für den Antritt erhielten sie jeweils 20 Rupien (vgl. Chandrasekhar et al., 2018, S. 48). 
+
+Für jedes Spiel konnten zehn Paare gebildet werden. Wirfst du einen etwas genaueren Blick auf die Ergebnisse der letzten Aufgabe, kannst du erkennen, dass die Variable `village` den Dörfern Zahlen zuordnet, diese jedoch nicht der Reihenfolge 1 bis 34 entsprechen. Dies kann damit begründet werden, dass die Autoren des hier behandelten Artikels auf bereits erhobene Daten zurückgreifen konnten. Weitere Informationen findest du in der Infobox.
+
+```{r eval=FALSE}
+# Run for additional info in the Viewer pane
+info("Banerjee et al. (2013)")
+```
+
+Anhand der letzten Aufgaben hast du einen Überblick über die Anzahl der Teilnehmer und Dörfer erhalten. Wir möchten nun einen etwas genaueren Blick auf die Teilnehmer des Experiments werfen. In den nächsten Aufgaben folgt daher die Betrachtung der Variablen `male`, `education` und `age`. Die Variable `male` ist eine Dummy-Variable und hat die Ausprägung 1, wenn die betrachtete Person männlich ist. Mithilfe der Variablen `age` und `education` werden jeweils das Alter sowie die Bildung in Jahren gemessen. Alle drei Variablen beziehen sich auf die Person, welche durch die Variable `id` identifiziert wird. Eine Betrachtung der Variablen des Partners (`id_partner`) ist nicht notwendig, da diese dieselben Informationen enthalten.
+
+Wie bereits in den ersten Kapiteln beschrieben, bezieht sich jede Zeile des Datensatzes auf eine Person und deren Partner sowie eine Spielrunde während des Experiments. Somit enthalten mehrere Zeilen Informationen zu Geschlecht, Alter und Bildung einer Person. Die Ermittlung von Durchschnittswerten für die Variablen wäre jedoch trotzdem möglich, wenn die Anzahl der Runden jedes Spiels für alle Personen übereinstimmt. Somit würde jede Person für die Berechnung gleich gewichtet werden. Dass dies jedoch nicht der Fall ist, kannst du anhand der nächsten Aufgabe sehen.
+
+**Aufgabe:** Drücke **check**, um die Durchschnittswerte sowie die Minimal- und Maximalwerte der Runden für die einzelnen Spiele zu betrachten.
+
+```{r "5_4"}
+# Berechne die Minimal-, Maximal- und Durchschnittswerte der Runden für jedes Spiel.
+dat %>%
+  group_by(id,game_name) %>%
+  filter(round==max(round)) %>%
+  group_by(game_name) %>%
+  summarise(rounds_mean=mean(round),rounds_min=min(round),rounds_max=max(round))
+```
+
+Die Tabelle zeigt, dass im Durchschnitt jedes Spiel nach weniger als sieben Runden beendet wurde. Das kürzeste Spiel dauerte fünf und das längste acht Runden. Um Personen nicht unterschiedlich stark zu gewichten, ist es daher notwendig, den Datensatz `dat` nach einer Beobachtung pro Person zu filtern.
+
+
+Quiz: Muss für die Betrachtung der Variablen `age`, `education` und `male` nach dem jeweiligen Spiel unterschieden werden?
+
+[1]: Ja
+[2]: Nein
+
+```{r eval=FALSE}
+# Run line to answer the quiz above
+answer.quiz("Unterschied der Spiele")
+```
+
+Um jeweils eine Beobachtung für jede am Experiment teilnehmende Person zu erhalten, kann der Befehl `filter()` verwendet werden. 
+
+**Aufgabe:** Verwende den Befehl `filter()`, um für den Datensatz `dat` eine Beobachtung für jede am Experiment teilnehmende Person zu erhalten. Filtere den Datensatz nach der ersten Runde (`round`) des Spiels (`game_name`) **Enforcement**. Speichere deine Ergebnisse in der Variable `dat_pers` ab. Der Code ist teilweise schon gegeben. Fülle die Lücken im Code.
+
+```{r "5_5"}
+# Erstelle den Datensatz "dat_pers".
+___=___(dat,___=="Enforcement",___==1)
+```
+
+
+Quiz: Wie viele Zeilen hat der Datensatz  `dat_pers`? Um auf die Lösung zu kommen, ist es von Vorteil, die bisherigen Ergebnisse in diesem Kapitel erneut zu betrachten.
+
+[1]: 720
+[2]: 680
+[3]: 700
+
+```{r eval=FALSE}
+# Run line to answer the quiz above
+answer.quiz("Zeilenanzahl des gefilterten Datensatzes")
+```
+
+**Aufgabe:** Berechne den Durchschnitt der Variable `male` im Datensatz `dat_pers`. Nutze dazu den Befehl `mean()`.
+
+```{r "5_6"}
+# Berechne den Anteil der Männer im Experiment.
+```
+
+Dein Ergebnis zeigt, dass etwa 47 Prozent aller Teilnehmer männlich waren. Da nur zwischen Männern und Frauen unterschieden wurde, waren demnach 53 Prozent aller Teilnehmer weiblich.
+
+Wir sind nun an der Altersverteilung der Teilnehmer interessiert. Mit dem Befehl `geom_histogram()` aus dem Paket `ggplot2` kannst du grafisch darstellen, wie viele Personen jedes Alters am Experiment teilnahmen. Eine Einführung zum Paket `ggplot2` erhältst du in der Infobox.
+
+```{r eval=FALSE}
+# Run for additional info in the Viewer pane
+info("ggplot2")
+```
+
+**Aufgabe:** Fülle die Lücken im Code. 
+
+```{r "5_7"}
+# Lade das Paket "ggplot2".
+library(ggplot2)
+
+# Erstelle ein Histogramm für die Variable "age".
+ggplot(data = dat_pers,aes(x=___))+
+  ___(binwidth = 0.5,fill="steelblue")+
+  labs(x="Age",y="Count")+
+  scale_y_continuous(limits = c(0, 70), breaks = seq(0, 70, by = 10))
+```
+
+Die Grafik zeigt, dass Personen im Alter von 18 bis 54 Jahren am Experiment teilnahmen. Dies deckt sich jedoch nicht mit den Angaben im Artikel. In diesem wurde beschrieben, dass die älteste Person 50 Jahre alt war (vgl. Chandrasekhar et al., 2018, S. 48).
+
+**Aufgabe:** Berechne nun den Durchschnittswert der Variable `age`. 
+
+```{r "5_8"}
+# Ermittle das Durchschnittsalter der Teilnehmer.
+```
+
+Eine Übersicht über die Bildungsjahre erhältst du nach demselben Schema. Erstelle zunächst ein Histogramm für die Variable `education`.
+
+**Aufgabe:** Drücke `check`, um den bereits gegebenen Code zu bestätigen.
+
+```{r "5_9"}
+# Erstelle ein Histogramm für die Variable "education".
+ggplot(data = dat_pers,aes(x=education))+
+  geom_histogram(binwidth = 0.5,fill="steelblue")+
+  labs(x="Years of education ",y="Count")+
+  scale_y_continuous(limits = c(0, 70), breaks = seq(0, 70, by = 10))+
+  scale_x_continuous(limits = c(0, 15), breaks = seq(0, 15, by = 1))
+```
+
+Alle Personen besuchten mindestens ein Jahr eine Bildungseinrichtung. Am häufigsten waren sieben, acht und neun Jahre Bildung.
+
+**Aufgabe:** Wir möchten ebenfalls den Durchschnittswert der Variable `education` betrachten. Der Code ist bereits gegeben. Drücke **check**, um ihn auszuführen.
+
+```{r "5_10"}
+mean(dat_pers$education,na.rm=TRUE)
+```
+
+
+## Exercise 3: Die Spiele im Vergleich
+
+In diesem Kapitel möchten wir untersuchen, wie die Teilnehmer auf die unterschiedlichen Vertragssituationen in den Spielen reagiert haben. Die Reaktionen können zum einen die versprochenen, aber auch die tatsächlichen Transfers umfassen. Eine Betrachtung des Konsums ist ebenfalls von Interesse, da dieser von den getätigten Transfers und dem Sparverhalten der Teilnehmer abhängt. Es wird vor allem der Frage nachgegangen, ob Unterschiede zwischen den Spielen anhand der Daten erkennbar sind. 
+
+Um mit der Aufgabe zu beginnen, muss zunächst der Datensatz geladen werden.
+
+**Aufgabe:** Drücke **check**, um den Datensatz `exp_data.rds` zu laden und in `dat` abzuspeichern.
+
+```{r "6_1"}
+dat=readRDS("exp_data.rds")
+```
+
+Zunächst möchten wir die Variable `promise_to_partner` betrachten. Diese beschreibt die versprochenen Geldbeträge der Person `id` in jeder Runde eines Spiels. Um eine zusammenfassende Statistik für diese Variable und jedes Spiel zu erhalten, kann der Befehl `descibeBy()` aus dem Paket `psych` verwendet werden. Der Befehl liefert unter anderem die Anzahl der Beobachtungen, den Mittelwert, die Standardabweichung, den Median, die mittlere absolute Abweichung vom Median sowie Minimal- und Maximalwerte. Weitere Informationen zum Paket `psych` sowie zum Befehl `describeBy()` findest du <a href="https://cran.r-project.org/web/packages/psych/psych.pdf" target="_blank">hier</a>.
+
+**Aufgabe:** Lade zunächst das Paket `psych`. Nutze im Anschluss den Befehl `describeBy(variable,group)`, um eine zusammenfassende Statistik für die Variable `promise_to_partner` zu erhalten. Eine Gruppierung soll nach den einzelnen Spielen (`game_name`) erfolgen.
+
+```{r "6_2"}
+# Lade das Paket "psych".
+
+# Nutze den Befehl "describeBy()" für die Variable "promise_to_partner".
+describeBy(dat$___,dat$___)
+```
+
+Der durchschnittlich versprochene Transfer lag im Spiel **Enforcement** bei 91,33 Rupien, im Spiel **No Enforcement** bei 91,93 Rupien und im Spiel **No Enforcement, Savings** bei 89,72 Rupien. Der Median stimmte bei allen drei Spielen überein. Bei der Betrachtung der Minimal- sowie Maximalwerte zeigt sich, dass es in allen drei Spielen Beobachtungen gab, in denen dem Partner kein Geld versprochen wurde, jedoch gab es auch Beobachtungen, in denen eine Person dem Partner das komplette Einkommen zusicherte. 
+
+Aufgrund des Aufbaus des Datensatzes liefert die Betrachtung der Variable `promise_from_partner` dieselben Ergebnisse. Es bleibt zu erwähnen, dass sich die ermittelten Werte auf alle Beobachtungen des Datensatzes beziehen. Möchten wir die versprochenen Transfers mit den tatsächlichen vergleichen, so dürfen nur die Beobachtungen verwendet werden, bei denen das Einkommen (`income`) einen Wert von 250 Rupien hat. In der nächsten Aufgabe wird erneut eine zusammenfassende Statistik für die Variable `promise_to_partner` erstellt. Diese bezieht sich nur auf die Versprechen, welche die Person mit dem hohen Einkommensniveau gab.
+
+**Aufgabe:** Der Code ist bereits gegeben. Drücke **check**, um ihn auszuführen.
+
+```{r "6_3"}
+# Der Datensatz "dat_250" wird erstellt. 
+dat_250=filter(dat,income==250)
+# Der Befehl "describeBy()" wird verwendet, um eine zusammenfassende Statistik der Variable zu erhalten.
+describeBy(dat_250$promise_to_partner,dat_250$game_name)
+```
+
+Nach der Betrachtung der versprochenen Geldsummen, möchten wir nun einen Blick auf die tatsächlich durchgeführten Transfers werfen. Die Höhe wird im Datensatz durch die Variablen `transfer_to_partner` und `transfer_from_partner` aufgezeigt.
+
+Transfers konnten nur von Personen durchgeführt werden, welche über das hohe Einkommensniveau von 250 Rupien verfügten. Da die Variablen `transfer_to_partner` und `transfer_from_partner` auch Werte für Personen mit dem niedrigen Einkommensniveau enthalten (nämlich 0), können diese nicht für die Analyse genutzt werden. Wir werden aus diesem Grund die Variable `transfer` erstellen, welche für das niedrige Einkommensniveau keine Werte (`NA_real_`) enthält.
+
+**Aufgabe:** Der Code in der nächsten Aufgabe ist bereits gegeben. Durch den Befehl `mutate()` wird die Variable `transfer` erstellt. Erzielt die Person `id` das hohe Einkommensniveau (`income`=250) wird der jeweilige Transfer (`transfer_to_partner`) notiert. Ist dies nicht der Fall, so hat die Variable `transfer` in dieser Zeile des Datensatzes keinen Wert. Drücke **check**, um den Code auszuführen.
+
+```{r "6_4"}
+dat=mutate(dat,transfer=if_else(income==250,transfer_to_partner,NA_real_))
+```
+
+Zunächst möchten wir uns die durchschnittlichen Transfers in den einzelnen Spielen ansehen. Zusätzlich betrachten wir die dazugehörigen Konfidenzintervalle. Diese geben Intervalle an, welche den wahren Wert des durchschnittlichen Transfers mit einer bestimmten Wahrscheinlichkeit beinhalten (vgl. von Auer, 2013, S. 90 f.). In der nächsten Aufgabe wird das Konfidenzintervall für eine Wahrscheinlichkeit von 95 Prozent bestimmt.
+
+**Aufgabe:** Drücke **check**, um den bereits gegebenen Code auszuführen.
+
+```{r "6_5"}
+# Der Datensatz "sum_transfer" wird erstellt. Dieser enthält die durchschnittlichen Transfers je Spiel sowie die oberen und unteren Grenzen der Konfidenzintervalle.
+sum_transfer=dat%>%
+  group_by(game_name)%>%
+  summarise(mean_transfer=mean(transfer,na.rm=TRUE),
+# Mit dem Befehl "t.test()" lässt sich die Ober- und Untergrenze der Konfidenzintervalle berechnen.
+  lci=t.test(transfer,conf.level=0.95)$conf.int[1],
+  uci=t.test(transfer,conf.level=0.95)$conf.int[2])
+
+# Die durchschnittlichen Transfers sowie die Konfidenzintervalle werden grafisch dargestellt.
+ggplot(data = sum_transfer,aes(x=game_name,y=mean_transfer))+
+  geom_bar(stat="identity",fill="steelblue",color="black")+
+  geom_errorbar(aes(ymin=lci, ymax=uci),width=0.5)+
+  geom_text(aes(label=round(mean_transfer,2)), vjust=4, size=3.5, color="white")+
+  labs(x="Game",y="Average transfer")+
+  scale_y_continuous(limits = c(0, 100), breaks = seq(0, 100, by = 10))
+```
+
+*Das Schaubild entspricht Panel B aus "Figure 5" in Chandrasekhar et al. (2014, S. 29).*
+
+Im Schaubild ist erkennbar, dass die durchschnittlichen Transfers im Spiel **Enforcement** am höchsten waren. In den Spielen, in denen das Abweichen vom Versprechen erlaubt war, lag der Durchschnittswert der Transfers bei 82,73 beziehungsweise 82,24 Rupien. Mit dem Mann-Whitney-U-Test wird geprüft, ob die Unterschiede statistisch signifikant sind. 
+
+### Mann-Whitney-U-Test
+
+Der Mann-Whitney-U-Test (auch Wilcoxon-Mann-Whitney-Test oder Wilcoxon-Rangsummentest genannt) kann verwendet werden, um zu prüfen, ob zwei unabhängige Stichproben aus der gleichen Grundgesamtheit stammen. Der Test wurde durch Mann und Whitney (1947) sowie Wilcoxon (1945) ausgearbeitet. Für die Anwendung muss im Gegensatz zu anderen Tests, wie dem T-Test, keine Verteilungskurve für die Variable erfüllt sein (vgl. Nachar, 2008, S. 13). Es ist daher nicht notwendig, dies zu prüfen. Es handelt sich um einen nicht parametrischen Test. Die Hypothesen des Tests sind nachfolgend beschrieben:
+
+$H0:$ Die zwei Stichproben stammen aus der gleichen Grundgesamtheit.
+
+$H1:$ Die zwei Stichproben stammen nicht aus der gleichen Grundgesamtheit.
+
+Zuvor müssen jedoch einige Annahmen erfüllt sein (vgl. Nachar, 2008, S. 15). Diese sind folgendermaßen beschrieben:
+
+- Es liegen keine Mess- oder Erhebungsfehler vor.
+- Es liegt eine Unabhängigkeit der zu vergleichenden Gruppen vor.
+- Die vorliegenden Daten lassen sich in eine Rangordnung bringen.
+
+
+Um die Prüfgröße der einzelnen Gruppen zu bestimmen, müssen die Beobachtungen zunächst in eine Rangfolge gebracht werden. Im Anschluss werden die Ränge innerhalb der Gruppen summiert. Da die Prüfgrößen approximativ normalverteilt sind, können diese standardisiert werden (vgl. Schlittgen, 2012, S. 362). P-Werte sind anhand einer Tabelle ablesbar. Abschließend kann die Nullhypothese entweder verworfen oder behalten werden.
+
+Wir möchten anhand des Tests zuerst die Transfers in den Spielen **Enforcement** und **No Enforcement** vergleichen. In R kann der Befehl `wilcox.test()` verwendet werden. Dieser führt den Mann-Whitney-U-Test durch. Für die Anwendung des Tests ist es erforderlich, dass nur zwei Spiele, welche verglichen werden sollen, im Datensatz vorhanden sind. Um dies zu erreichen, wird der Befehl `filter()` verwendet.
+
+**Aufgabe:** Der Code führt den Mann-Whitney-U-Test für die Spiele **Enforcement** und **No Enforcement** durch. Drücke **check**, um ihn zu bestätigen.
+
+```{r "6_6"}
+# Der Datensatz "game12" wird erstellt. Dieser enthält nur Daten der Spiele "Enforcement" und "No Enforcement".
+game12=filter(dat,game_name!="No Enforcement, Savings")
+# Der Test wird für den Datensatz "game12" durchgeführt.
+wilcox.test(formula = transfer~game_name,data=game12)
+```
+
+Da der p-Wert unterhalb eines gewählten Signifikanzniveaus von 0,05 liegt, kann die Nullhypothese verworfen werden. Die Stichproben stammen somit nicht aus der gleichen Grundgesamtheit. 
+
+**Aufgabe:** Führe nun den Mann-Whitney-U-Test für die Spiele **Enforcement** und **No Enforcement, Savings** durch. Fülle dazu die Lücken im Code.
+
+```{r "6_7"}
+# Welches Spiel darf im Datensatz "game13" nicht vorkommen?
+game13=filter(dat,game_name!=___)
+# Füge die passende Variable in die Lücke.
+wilcox.test(formula = ___~game_name,data=game13)
+```
+
+Auch beim Vergleich der Spiele **Enforcement** und **No Enforcement, Savings** kann die Nullhypothese verworfen werden. Der p-Wert liegt erneut unter dem gewählten Signifikanzniveau (0,05).
+
+**Aufgabe:** Für die Spiele **No Enforcement** und **No Enforcement, Savings** ist der Code bereits gegeben. Drücke **check**, um ihn zu bestätigen.
+
+```{r "6_8"}
+game23=filter(dat,game_name!="Enforcement")
+
+wilcox.test(formula = transfer~game_name,data=game23)
+```
+
+
+Quiz: Kann auch beim Vergleich der Spiele **No Enforcement** und **No Enforcement, Savings** die Nullhypothese für ein Signifikanzniveau von 0,05 abgelehnt werden?
+
+[1]: Ja
+[2]: Nein
+
+```{r eval=FALSE}
+# Run line to answer the quiz above
+answer.quiz("Mann-Whitney-U-Test")
+```
+
+
+Nach dem Vergleich der Spiele hinsichtlich der Transfers, möchten wir Abweichungen zwischen tatsächlichem und versprochenem Transfer untersuchen. Dazu wird die Variable `trans_diff` erstellt. Im Anschluss wird die Häufigkeit der jeweiligen Werte anhand des Befehls `ggplot()` visualisiert. Dabei ist es möglich, zwischen den Spielen zu unterscheiden.
+
+**Aufgabe:** Der Code ist bereits gegeben. Drücke **check**, um ihn auszuführen.
+
+```{r "6_9"}
+dat=mutate(.data = dat,trans_diff=transfer-promise_to_partner)
+
+ggplot(dat,aes(trans_diff))+
+  geom_bar(stat = "count",fill="steelblue")+
+  labs(x="Difference of transfer and promise",y="Count")+
+  facet_wrap(~game_name)
+```
+
+Da die Erfüllung der Verträge im Spiel **Enforcement** durch externe Kontrolle garantiert wurde, müssen Transfers und die versprochenen Geldsummen übereinstimmen. Anhand der Grafik lässt sich jedoch erkennen, dass es einige Fälle gab, in denen die Daten nicht übereinstimmten. Die Abweichung kann nur durch Fehler bei der Datenerhebung erklärt werden. In den Spielen **No Enforcement** und **No Enforcement, Savings** stimmten der Transfer und die versprochene Summe in den meisten Fällen überein. Es kam allerdings auch vor, dass weniger Geld als versprochen transferiert wurde. Auch der Fall, dass mehr Geld transferiert als zugesichert wurde, kam vor.
+
+In der nächsten Aufgabe wird die Variable `trans_diff01` erstellt. Diese kann drei Ausprägungen aufweisen. Wenn Transfer und Versprechen sich gleichen, hat sie den Wert "No deviation". Entsprechen sich Transfer und Versprechen nicht, hat sie die Ausprägungen "Greater transfer" oder "Smaller transfer". Für die Variable kann im Anschluss eine Häufigkeitstabelle für jedes Spiel erstellt werden. Dies wird durch den Befehl `table(variable,group)` erreicht. Die relativen Häufigkeiten können durch `prop.table()` erlangt werden.
+
+**Aufgabe:** Der Code ist bereits gegeben. Drücke **check**, um ihn auszuführen.
+
+```{r "6_10"}
+# Die Variable "trans_diff01" wird erstellt. Diese enthält die Information, ob Transfers größer, kleiner oder gleich dem versprochenen Transfer waren.
+dat=mutate(dat,trans_diff01= case_when(
+    trans_diff==0 ~ "No deviation",
+    trans_diff>0 ~ "Greater transfers",
+    trans_diff<0 ~ "Smaller transfers",
+    TRUE ~ NA_character_
+    ))
+# Es wird eine Tabelle erstellt, welche für alle Spiele die relativen Anteile der Ausprägungen der Variable "trans_diff01" enthält.
+round(prop.table(table(dat$trans_diff01,dat$game_name),2),4)*100
+```
+
+Die Tabelle verdeutlicht noch einmal, dass im Spiel **Enforcement** wenige Beobachtungen hinsichtlich Transfer und Versprechen nicht übereinstimmten. Ohne externe Durchsetzung der Verträge tendieren Transfers dazu, kleiner als der versprochene Betrag zu sein. In beiden Spielen wurde jedoch auch die Möglichkeit genutzt, mehr an den Partner zu transferieren als zuvor zugesichert.
+
+Am Ende des Kapitels möchten wir für jedes Spiel betrachten, wie groß die Abweichungen des Konsums im Vergleich zum Durchschnitt waren. Dies kann anschließend als Maß der Kooperation der Partner herangezogen werden. Die Konsumabweichung ist minimal, wenn jede Person die Hälfte des erhaltenen Geldes an deren Partner transferiert.
+
+In der nächsten Aufgabe wird die Variable `cons_dev` generiert. Für Runde `t` und Person `i` wird die Konsumabweichung nach folgender Gleichung bestimmt:
+
+$$cons\_dev_{it} =|consumption_{it}-\widetilde {consumption}|$$
+
+Durch den Befehl `mutate()` kann die Variable `cons_dev` erstellt werden. Diese berechnet sich aus dem absoluten Wert der Differenz zwischen der Variable `consumption` und deren Durchschnittswert. 
+
+**Aufgabe:** Der Code ist bereits gegeben. Drücke **check**, um ihn auszuführen.
+
+```{r "6_11"}
+dat=mutate(dat,cons_dev=abs(consumption-mean(consumption,na.rm=TRUE)))
+```
+
+*Hinweis: Die Formel zur Berechnung der Konsumabweichung deckt sich nicht mit den Angaben im Artikel. In diesem wurde beschrieben, dass sich der durchschnittliche Konsum ebenfalls auf eine Person bezieht (vgl. Chandrasekhar et al., 2018, S. 58). Für die Analyse wurde die Variable jedoch anhand der obigen Formel erstellt*
+
+Es ist nun möglich, die Durchschnittswerte der Variable `cons_dev` grafisch darzustellen. Wie bereits für die Variable `transfer`, sollen ebenfalls Konfidenzintervalle angezeigt werden.
+
+**Aufgabe:** Der Code ist bereits gegeben. Drücke **check**, um ihn auszuführen.
+
+```{r "6_12"}
+sum_cons_dev=dat%>%
+  group_by(game_name)%>%
+  summarise(
+  mean_cons_dev=mean(cons_dev,na.rm=TRUE),
+  lci=t.test(cons_dev,conf.level=0.95)$conf.int[1],
+  uci=t.test(cons_dev,conf.level=0.95)$conf.int[2])
+
+ggplot(data = sum_cons_dev,aes(x=game_name,y=mean_cons_dev))+
+  geom_bar(stat="identity",fill="steelblue",color="black")+
+  geom_errorbar(aes(ymin=lci, ymax=uci),width=0.5)+
+  geom_text(aes(label=round(mean_cons_dev,2)), vjust=4, size=3.5, color="white")+
+  labs(x="Game",y="Average consumption deviation")+
+  scale_y_continuous(limits = c(0, 60), breaks = seq(0, 60, by = 10))
+```
+
+*Das Schaubild entspricht Panel A aus "Figure 5" in Chandrasekhar et al. (2014, S. 29).*
+
+Im Spiel **Enforcement** liegt die durchschnittliche Konsumabweichung bei 40,89 Rupien. Der Wert ist in den beiden anderen Spielen höher. Würde man den Mann-Whitney-U-Test für die Variable `cons_dev` und jede Kombination an Spielen durchführen, so müsste jede Nullhypothese für das bisher verwendete Signifikanzniveau abgelehnt werden.
+
+In diesem Kapitel wurde ersichtlich, dass in den Spielen deutliche Unterschiede zwischen den Transfers und der Kosumabweichung bestehen. Ohne externe Durchsetzung der Verträge war die Kooperation der Teilnehmer geringer. Es stellt sich die Frage, ob ein hohes Maß an Kooperation trotz fehlender Instanzen anhand personenspezifischer Eigenschaften begründet werden kann.
+
+## Exercise 4: Analyse von Netzwerken
+
+Im Artikel werden Netzwerkmaße dazu genutzt, die Unterschiede zwischen den Spielen hinsichtlich Transfer und Konsumabweichung zu erläutern. Sich nahestehende Personen wie zum Beispiel Freunde und Verwandte haben einen hohen Anreiz, Verträge wie versprochen zu erfüllen. Für einander fremde Personen besteht im Gegensatz dazu ein höherer Anreiz, Verträgen nur zum Teil oder gar nicht nachzukommen. Dies kann damit begründet werden, dass diese Personen zukünftig mit einer geringeren Wahrscheinlichkeit interagieren und ihr Fehlverhalten nicht bestraft wird. Auch die Zentralität einer Person im Netzwerk ist ein entscheidender Ansatzpunkt, um Kooperation trotz fehlender staatlicher Durchsetzung zu erklären. Die Idee ist, dass zentralere Personen in einem Netzwerk Fehlverhalten eher bestrafen können. Ihre Ansichten und Meinungen verteilen sich weiter, da die Wahrscheinlichkeit von zukünftigen Interaktionen mit anderen Personen größer ist (vgl. Chandrasekhar et al., 2018, S. 45).
+ 
+Aufgrund der Übersichtlichkeit werden wir im Folgenden zuerst ein Beispielnetzwerk betrachten. Dieses besteht aus acht Personen. Anschließend wird beschrieben, wie die Netzwerke für die Analyse des Experiments gebildet wurden.
+
+Um mit der Analyse von Netzwerken zu starten, muss das Paket `igraph` geladen werden.
+
+**Aufgabe:** Lade das Paket `igraph` mithilfe des Befehls `library()`.
+
+```{r "7_1"}
+# Lade das Paket "igraph".
+```
+
+Mit dem Befehl `graph()` können Netzwerke modelliert werden. Dies soll auch in der nächsten Aufgabe geschehen. Um das Netzwerk grafisch darzustellen, muss der Befehl `plot()` verwendet werden.
+
+**Aufgabe:** Der Code, um das Netzwerk `g1` grafisch darzustellen, ist bereits gegeben. Drücke **check**, um den Code auszuführen.
+
+```{r "7_2"}
+# Das Netzwerk wird modelliert.
+g1 = graph( edges=c(1,2,2,3,3,1,4,1,5,4,5,6,5,7,6,7), n=8, directed=FALSE )
+# Das Netzwerk wird grafisch dargestellt.
+plot(g1, vertex.size=30)
+```
+
+Jede einzelne Person ist durch einen orangen Punkt mit einer Zahl gekennzeichnet. Stehen Personen in Bezug zueinander, sind diese Punkte mit einer Linie verbunden. 
+Das hieraus entstandene Netzwerk ist ungerichtet. Ist eine Person mit einer anderen verbunden, so gilt dies auch im Umkehrschluss. Die Verbindungen zwischen den Personen sind somit für beide in gleicher Weise gültig. Des Weiteren ist das Netzwerk ungewichtet. Jede Verbindung wird als gleichwertig betrachtet, unabhängig davon, wie intensiv eine Beziehung zwischen den Personen ist. (vgl. Jackson, 2010, S. 21)
+
+Das Netzwerk kann auch als Matrix dargestellt werden. Dafür wird der Befehl `get.adjacency()` verwendet.
+
+**Aufgabe:** Wende den Befehl `get.adjacency()` für das Netzwerk `g1` an.
+
+```{r "7_3"}
+# Gib deinen Code hier ein:
+```
+
+Die Matrix zeigt die Verbindungen zwischen den acht Personen auf. Daher verfügt sie über acht Zeilen und Spalten, die sich jeweils auf eine der Personen beziehen. Da innerhalb der Matrix nur der Wert eins vorkommt (Personen sind verbunden), wird noch einmal verdeutlicht, dass es sich um ein ungewichtetes Netzwerk handelt. Es lässt sich ebenfalls erkennen, dass ein ungerichtetes Netzwerk vorliegt, da die Werte entlang der Diagonalen symmetrisch verteilt sind. Die dargestellte Matrix wird auch als Adjazenzmatrix bezeichnet (vgl. Jackson, 2010, S. 21).
+
+Angenommen, die Verbindungen im Netzwerk `g1` stellen Freundschaftsbeziehungen zwischen den einzelnen Personen dar. Demnach sind zum Beispiel Person eins und zwei miteinander befreundet. Die Personen zwei und vier sind hingegen nicht direkt miteinander verbunden. Sie sind Freundesfreunde, da beide mit Person eins verbunden sind.
+
+Die Distanz (kürzeste Pfadlänge) zwischen zwei Personen beschreibt eine Mindestanzahl an Verbindungen, welche gedanklich abgelaufen werden müssen, um von einer Person zur anderen zu gelangen (vgl. Jackson, 2010, S. 32). Für das Beispielnetzwerk kann diese für jede Kombination an Personen durch eine Matrix dargestellt werden. Da das Netzwerk acht Personen umfasst, verfügt die Matrix über acht Zeilen und Spalten. Du kannst die Distanzmatrix für das Netzwerk `g1` mithilfe des Befehls `distances()` berechnen. 
+
+**Aufgabe:** Berechne die Distanzmatrix des Netzwerkes.
+
+```{r "7_4"}
+# Gib deinen Code hier ein:
+```
+
+Die Distanzmatrix zeichnet sich dadurch aus, dass alle Elemente auf der Hauptdiagonalen den Wert null haben. Dies liegt daran, dass die Distanz einer Person zu sich selbst null ist. Person acht ist für keine der anderen Personen im Netzwerk erreichbar. Es gibt keine Verbindungen zwischen Person acht und anderen Personen. In der Matrix wird dies durch den Wert "Inf" (unendlich) ersichtlich.
+
+Die Idee, dass die Zentralität einer Person ein entscheidender Faktor ist, um Kooperation während des Experiments zu erklären, wurde bereits in der Einleitung des Kapitels beschrieben. Verschiedene Zentralitätsmaße werden durch Jackson (2010, S. 37 f.) in folgende vier Gruppen aufgeteilt:
+
+- Degree-Zentralität: Die Zentralität der Person richtet sich nach der Anzahl der Verbindungen zu anderen Personen.
+- Closeness-Zentralität: Es stellt sich die Frage, wie einfach eine Person andere durch das Netzwerk erreichen kann. 
+- Betweenness-Zentralität: Eine Person ist zentraler, wenn sie Teile des Netzwerkes miteinander verbindet.
+- Eigenschaften der Nachbarn: Bei der Berechnung der Zentralität einer Person wird auch betrachtet, wie zentral deren Nachbarn sind.
+
+Im Experiment wurde als Maß die Eigenvektor-Zentralität verwendet. Diese kann in die letzte der vier Gruppen eingeordnet werden. Sie misst, ausgehend von einer Person, wie weit sich Informationen verteilen (vgl. Jackson, 2010, S.40 f.). Im Gegensatz zur Degree-Zentralität wird nicht jede Verbindung gleich gewichtet. Sie richtet sich nach der Zentralität anderer Personen. Für die Berechnungen werden nicht nur direkte, sondern auch indirekte Verbindungen im Netzwerk einbezogen. Somit ergibt sich ein Bild anhand des gesamten Netzwerks (vgl. Bonacich, 2007, S. 555).
+
+```{r eval=FALSE}
+# Run for additional info in the Viewer pane
+info("Berechnung der Eigenvektor-Zentralität")
+```
+
+Um die Eigenvektor-Zentralitäten der Personen des Beispielnetzwerkes zu erhalten, wird der Befehl `eigen_centrality()` benötigt.
+
+**Aufgabe:** Der Code ist bereits gegeben. Klicke daher auf **check**, um den Code auszuführen. 
+
+```{r "7_5"}
+eigen_centrality(g1)$vector
+```
+
+Nach Berechnung der Werte kann festgestellt werden, dass die Personen eins und fünf die zentralsten Personen im Netzwerk sind.
+
+
+Quiz: Welche der Personen zeichnet sich durch die geringste Eigenvektor-Zentralität aus?
+
+[1]: 8
+[2]: 2
+[3]: 3
+
+```{r eval=FALSE}
+# Run line to answer the quiz above
+answer.quiz("Eigenvektor-Zentralität 1")
+```
+
+**Aufgabe:** Das Netzwerk soll erneut dargestellt werden. Die Größe der Punkte wird nun durch die Eigenvektor-Zentralität der Personen bestimmt. Der Code ist bereits gegeben. Drücke **check**, um ihn zu bestätigen.
+
+```{r "7_6"}
+# Das Netzwerk wird grafisch dargestellt. Die Größe der Punkte hängt nun von der jeweiligen Eigenvektor-Zentralität ab.
+plot(g1, vertex.size=eigen_centrality(g1)$vector*40)
+```
+
+Der Unterschied zwischen Eigenvektor- und Degree-Zentralität kann anhand des Schaubilds noch einmal verdeutlicht werden. Betrachte dazu die Personen zwei und vier. Bei der Berechnung der Degree-Zentralität lässt sich kein Unterschied zwischen beiden Personen feststellen, da sie jeweils mit zwei weiteren Personen verbunden sind. Person vier ist mit den zentralsten Personen im Netzwerk direkt verbunden (unabhängig davon, welches der beiden Zentralitätsmaße verwendet wird). Dies gilt für Person zwei nicht. Aus diesem Grund ist die Eigenvektor-Zentralität von Person vier größer als von Person zwei.
+
+Die Netzwerkdaten für die Analyse des Experiments wurden bereits von Banerjee et al. (2013) gesammelt. Insgesamt wurden 46 Prozent aller Haushalte in den Dörfern zu Verbindungen mit anderen Haushalten befragt (vgl. Chandrasekhar et al., 2018, S. 54). Damit eine Verbindung zwischen zwei Personen entstand, musste mindestens eine von zwölf Voraussetzungen erfüllt sein. Diese waren wie folgt definiert (vgl. Chandrasekhar et al., 2018, S. 54):
+
+1. Eine Person besucht eine andere Person zuhause.
+2. Eine Person wird von einer anderen Person zuhause besucht.
+3. Es handelt sich bei den Personen um Familienmitglieder.
+4. Die Personen verbringen Zeit miteinander.
+5. Zwischen den Personen werden medizinische Ratschläge ausgetauscht.
+6. Eine Person würde einer anderen Person Geld leihen.
+7. Eine Person würde von einer anderen Person Geld geliehen bekommen.
+8. Eine Person würde von einer anderen Person Güter (z.B. Reis, Kerosin) leihen.
+9. Eine Person würde einer anderen Person Güter leihen.
+10. Eine Person erhält von einer weiteren Person Ratschläge.
+11. Eine Person gibt einer anderen Person Ratschläge.
+12. Die Personen besuchen zusammen die Kirche, den Tempel oder die Moschee.
+
+Nachdem die Daten gesammelt wurden, konnte ein ungewichtetes sowie ungerichtetes Netzwerk gebildet werden. Wie bereits erwähnt, wurden nicht alle Verbindungen zwischen Personen der Dörfer aufgedeckt. Verbindungen zwischen Personen aus unterschiedlichen Dörfern wurden ebenfalls nicht ermittelt. Daher ist es denkbar, dass die wahre Distanz zwischen einigen am Experiment teilnehmenden Personen geringer ist. Die Eigenvektor-Zentralität könnte ebenfalls verschieden sein (vgl. Chandrasekhar und Lewis, 2012).
+
+Abschließend möchten wir das Netzwerk eines der Dörfer grafisch betrachten. Ich habe als Beispiel das Dorf fünf ausgewählt (das Experiment wurde nicht in den Dörfern eins bis vier durchgeführt). In diesem wurden 650 Personen zu möglichen Verbindungen mit anderen befragt.
+
+Die Daten wurden von Banerjee et al. (2013) erhoben. Einen Link zum Artikel sowie zu den Daten findest du <a href="https://dataverse.harvard.edu/dataset.xhtml?persistentId=hdl:1902.1/21538" target="_blank">hier</a>.
+
+**Aufgabe:** Der Code ist bereits gegeben. Klicke daher auf **check**, um den Code auszuführen. 
+
+```{r "7_7"}
+# Der Datensatz "adj_allVillageRelationships_vilno_5.csv" wird geladen und in der Variable "dat5" gespeichert.
+dat5=read.csv("adj_allVillageRelationships_vilno_5.csv", header=FALSE)
+
+# Da der Datensatz die Adjazenzmatrix enthält, wird dieser als Matrix gespeichert.
+mat5=as.matrix(dat5)
+
+# Ein Netzwerk (Graph) wird erstellt.
+net5=graph.adjacency(mat5, mode="undirected")
+
+# Das Netzwerk wird grafisch dargestellt.
+plot(net5,vertex.size=2,vertex.color = "Orange",vertex.label=NA)
+```
+
+Aufgrund der Menge an Personen ist das dargestellte Netzwerk sehr unübersichtlich. Es wird jedoch klar, dass ein Großteil der Personen sich innerhalb des Netzwerkes erreichen kann. Nur wenige Personen sind vom Rest des Netzwerkes isoliert.
+
+
+Quiz: Im dargestellten Netzwerk ist nicht jede Verbindungslinie zwischen zwei Personen gleich lang. Hat dies eine Bedeutung?
+
+[1]: Ja, umso länger die Linie, desto schwächer ist die Verbindung zwischen den Personen.
+[2]: Nein, die Länge der Verbindungslinie hat keine Bedeutung.
+
+```{r eval=FALSE}
+# Run line to answer the quiz above
+answer.quiz("Verbindung zwischen Personen")
+```
+
+
+### Quiz
+
+Am Ende des Kapitels hast du die Möglichkeit, das erlernte Wissen noch einmal anzuwenden. Beantworte dazu die Quizfragen für das dargestellte Netzwerk.
+
+<img src="Netzwerk.pdf" style="width: 20%; height: 20%">
+
+*Abbildung 4.1: Beispielnetzwerk mit 19 Personen Quelle: Eigene Darstellung in Anlehnung an Chandrasekhar et al. (2018, S. 46)*
+
+Das Netzwerk besteht aus 19 Personen. Zwei der Personen sind farblich hervorgehoben. Beantworte folgende Fragen zum dargestellten Netzwerk:
+
+
+Quiz: Wie groß ist die Distanz zwischen den Personen?
+
+[1]: 2
+[2]: 3
+[3]: 4
+
+```{r eval=FALSE}
+# Run line to answer the quiz above
+answer.quiz("Distanz")
+```
+
+
+Quiz: Welche der beiden Personen hat die größere Eigenvektor-Zentralität? Gib eine Vermutung ab.
+
+[1]: Person 6
+[2]: Person 10
+
+```{r eval=FALSE}
+# Run line to answer the quiz above
+answer.quiz("Eigenvektor-Zentralität 2")
+```
+
+
+## Exercise 5: Netzwerkdaten
+
+Im letzten Kapitel wurde vorgestellt, wie soziale Netzwerke beschrieben werden können. Du hast Maße wie die Distanz und die Eigenvektor-Zentralität kennengelernt. In diesem Kapitel liegt der Fokus darauf, die entsprechenden Variablen im Datensatz vorzustellen. Welchen Einfluss die Maße auf Transfer und Abweichung des Konsums in den jeweiligen Spielen hatten, wird im Anschluss untersucht. 
+
+**Aufgabe:** Lade den Datensatz `exp_data.rds`, um mit der Bearbeitung der Aufgaben zu starten. Der Datensatz wird in der Variable `dat` gespeichert. Drücke dazu **check**.
+
+```{r "8_1"}
+dat=readRDS("exp_data.rds")
+```
+
+## Distanz
+
+Die Variable `distance` beschreibt die Distanz (kürzeste Pfadlänge) zwischen beiden Partnern im Datensatz. Zunächst wollen wir die Häufigkeit der einzelnen Ausprägungen der Variable betrachten. Dazu wird in der nächsten Aufgabe ein Histogramm erstellt. Dieses beschreibt, wie oft die einzelnen Ausprägungen der Variable im Datensatz vorkommen. Um nicht jede Runde für die Erstellung des Schaubilds zu berücksichtigen, wird der Befehl `subset()` verwendet. Dieser ermöglicht, den Datensatz `dat` auf Beobachtungen aus der ersten Runde jedes Spiels zu beschränken.
+
+**Aufgabe:** Der Code ist bereits gegeben, drücke daher auf **check**.
+
+```{r "8_2"}
+# Erstelle ein Histogramm für die Variable "distance".
+ggplot(data=subset(dat, round==1),aes(distance))+
+  geom_histogram(fill="steelblue",binwidth = .5)+
+  labs(x="Distance ",y="Count")+
+  scale_x_continuous(breaks = seq(1,8,by=1))+
+  scale_y_continuous(breaks = seq(0,600,by=100))
+```
+
+Alle Spiele sind im Schaubild zusammengefasst. Eine Betrachtung zeigt, dass die Distanz zwischen den meisten Paaren drei oder vier betrug. Nur in seltenen Fällen war sie größer als sechs. Zu beachten ist, dass die Distanz für jede Person und deren Partner erfasst wird. Dies führt dazu, dass jedes Paar doppelt zählt.
+
+Um den Zusammenhang von `distance` mit der Variable `transfer` grafisch darzustellen, werden wir den Befehl `geom_smooth()` aus dem Paket `ggplot2` verwenden. Durch das Argument `method = "loess"` wird eine Regression durchgeführt, welche lokale polynomiale Anpassungen vornimmt. `se = TRUE` erlaubt es, das Konfidenzinterval für ein Niveau von 95 Prozent zu betrachten. Um die Entwicklung in allen drei Spielen separat aufzuzeigen, wird in der nächsten Aufgabe der Befehl `facet_wrap()` verwendet. Dieser ermöglicht, ein Schaubild pro Spiel zu erlangen.
+
+**Aufgabe** Der Code ist bereits gegeben. Drücke **check**, um ihn auszuführen.
+
+```{r "8_3",fig.width=10}
+ggplot(data=dat)+
+  geom_smooth(aes(x=distance,y=transfer), method = "loess", se = TRUE, span = 0.7)+
+  scale_x_continuous(limits = c(1,6), breaks = 1:6)+
+  labs(x="Distance",y="Transfer (in Indian rupees)")+
+  facet_wrap(~game_name)
+```
+
+Im Spiel **Enforcement** nehmen die Transfers zwischen den Partnern mit zunehmender Distanz nur leicht ab. Der Effekt verstärkt sich in den Spielen **No Enforcement** sowie **No Enforcement, Savings**. 
+
+Nach der Betrachtung der Transfers ist auch die Betrachtung der Konsumabweichung von Interesse. Hierfür können wiederum drei Schaubilder für die jeweiligen Spiele erstellt werden. 
+
+**Aufgabe** Stelle den Zusammenhang der Variablen `cons_dev` und `distance` grafisch dar. Erstelle für jedes Spiel ein separates Schaubild. Fülle dazu die Lücken im Code.
+
+```{r "8_4",fig.width=10}
+ggplot(data=dat)+
+  geom_smooth(aes(x=___,y=___), method = "loess", se = TRUE, span = 0.7)+
+  scale_x_continuous(limits = c(1,6), breaks = 1:6)+
+  labs(x="Distance",y="Consumption deviation (in Indian rupees)")+
+  facet_wrap(~___)
+```
+
+Die Konsumabweichung verändert sich bei steigender Distanz kaum, wenn Vereinbarungen eingehalten werden müssen (**Enforcement**). Ist dies allerdings nicht der Fall, so sind größere Abweichungen feststellbar. 
+
+## Eigenvektor-Zentralität
+
+Die jeweiligen Eigenvektor-Zentralitäten der Personen sind im Datensatz durch die Variablen `eigcent` sowie `eigcent_partner` beschrieben. `eigcent` ist die Eigenvektor-Zentralität der Person `id`, `eigcent_partner` bezieht sich auf `id_partner`. Beide Variablen sind normalisiert.
+
+In der nächsten Aufgabe soll die Häufigkeit der einzelnen Ausprägungen der Variable `id` betrachtet werden. Das Histogramm bezieht sich erneut auf Beobachtungen der ersten Spielrunden. Für die Variable `eigcent_partner` ist die Erstellung eines Histogramms nicht notwendig, da dies dieselben Ergebnisse liefert.
+
+**Aufgabe:** Der Code ist bereits gegeben. Klicke **check**, um ihn auszuführen.
+
+```{r "8_5"}
+ggplot(data=subset(dat, round==1),aes(eigcent))+
+  geom_histogram(fill="steelblue",bins = 45)+
+  labs(x="Eigenvector centrality ",y="Count")+
+  scale_x_continuous(limits = c(0,.15))
+```
+
+Das Histogramm macht deutlich, dass viele Personen mit niedriger Eigenvektor-Zentralität am Experiment teilnahmen. Die Anzahl der Personen war mit steigender Eigenvektor-Zentralität abnehmend.
+
+Wir möchten nun den Zusammenhang zwischen Transfers, Konsumabweichung und den Variablen `eigcent` und `eigcent_partner` grafisch darstellen. Dazu wird für jede Kombination ein Schaubild erstellt. Das Paket `patchwork` erlaubt, die Schaubilder anzuordnen.
+
+**Aufgabe:** Drücke **check**, um die Schaubilder anzusehen.
+
+```{r "8_6",fig.height=7, fig.width=10}
+# Lade das Paket "patchwork".
+library(patchwork)
+
+p1=ggplot(data=dat)+
+  geom_smooth(aes(x=eigcent,y=cons_dev,color=game_name), method = "loess", se = FALSE)+
+  scale_x_continuous(limits = c(0,0.15))+
+  labs(x="Eigenvector centrality",y="Consumption deviation (in Indian rupees)")+
+  theme(legend.position = "none")
+
+p2=ggplot(data=dat)+
+  geom_smooth(aes(x=eigcent,y=transfer,color=game_name), method = "loess", se = FALSE)+
+  scale_x_continuous(limits = c(0,0.15))+
+  labs(x="Eigenvector centrality",y="Transfer (in Indian rupees)")+
+  theme(legend.position = "none")
+
+p3=ggplot(data=dat)+
+  geom_smooth(aes(x=eigcent_partner,y=cons_dev,color=game_name), method = "loess", se = FALSE)+
+  scale_x_continuous(limits = c(0,0.15))+
+  labs(x="Partner's eigenvector centrality",y="Consumption deviation (in Indian rupees)")+
+  theme(legend.position = "none")
+
+p4=ggplot(data=dat)+
+  geom_smooth(aes(x=eigcent_partner,y=transfer,color=game_name), method = "loess", se = FALSE)+
+  scale_x_continuous(limits = c(0,0.15))+
+  labs(x="Partner's eigenvector centrality",y="Transfer (in Indian rupees)")+
+  scale_colour_discrete("Game")
+
+# Ordne die Schaubilder an.
+(p1 | p2) /
+(p3 | p4) 
+```
+
+In allen Spielen steigen Transfers mit zunehmender Eigenvektor-Zentralität einer Person. Dies gilt ebenfalls für die Eigenvektor-Zentralität des Partners. Die Konsumabweichung sinkt jeweils. Hinsichtlich des Spiels **Enforcement** sind die Effekte jeweils schwächer.
+
+## Zusatzaufgabe
+
+Neben der Eigenvektor-Zentralität enthält der Datensatz Daten zur Degree-Zentralität der einzelnen Personen. Die Variable hat den Namen `degree`. Allerdings wurde nicht angegeben, auf welche der beiden Personen (`id` oder `id_partner`) sich diese Variable bezieht. Um dies herauszufinden, kannst du den Korrelationskoeffizienten von `degree` mit `eigcent` und `eigcent_partner` berechnen. Dies ist anhand des Befehls `cor()` möglich. 
+
+**Aufgabe:** Fülle die Lücken im Code.
+
+```{r "8_7"}
+# Berechne den Korrelationskoeffizienten für Person "id"
+cor(dat$degree,___, use = "complete.obs")
+# Berechne den Korrelationskoeffizienten für Person "id_partner"
+cor(dat$degree,___, use = "complete.obs")
+```
+
+
+Quiz: Auf welche Person bezieht sich die Degree-Zentralität? Triff deine Entscheidung basierend auf deinen Berechnungen.
+
+[1]: id
+[2]: id_partner
+
+```{r eval=FALSE}
+# Run line to answer the quiz above
+answer.quiz("Korrelationskoeffizient")
+```
+
+
+*Hinweis: Das Kapitel nimmt Bezug auf Chandrasekhar et al. (2018), Seite 61 ("Figure 4").*
+
+## Exercise 6: Einstieg in lineare Regressionen
+
+In den folgenden Kapiteln wollen wir herausfinden, ob die kennengelernten Netzwerkmaße als Erklärung für die jeweilige Höhe der Transfers und der Konsumabweichung in den Spielen herangezogen werden können. Es stellt sich die Frage, ob sich die Effekthöhe der Netzwerkmaße in den Spielen unterschied.
+
+Wir werden die Analyse mit einem einfachen Regressionsmodell beginnen. Dies bedeutet, dass das Modell nur eine erklärende Variable enthält. Die abhängige Variable beschreibt die Höhe der Transfers. Die Analyse wird zunächst nur das Spiel **No Enforcement** umfassen. Betrachte das folgende Regressionsmodell:
+
+$$ transfer_{ijt} = \beta_0 + \beta_1 \cdot eigcent\_partner_j + \varepsilon_{ijt} $$
+
+Die Gleichung beschreibt den Zusammenhang zwischen den Transfers einer Person und der Eigenvektor-Zentralität des jeweiligen Partners im Experiment. In der Regressionsgleichung ist der Transfer die abhängige Variable. Die einzelnen Komponenten der Gleichung sind nachfolgend erläutert:
+
+- $transfer_{ijt}$ ist der Transfer, den Person $i$ in Runde $t$ des Spiels tätigte. Den Transfer erhielt der jeweilige Partner $j$.
+- $\beta_0$ und $\beta_1$ sind die Regressionsparameter. $\beta_0$ ist die Konstante, $\beta_1$ der Steigungsparameter im Modell.
+- $eigcent\_partner_j$ beschreibt die Eigenvektor-Zentralität der Person $j$.
+- $\varepsilon_{ijt}$ ist die Störgröße.
+
+Wir werden die Schätzwerte der Parameter anhand der Kleinstquadratemethode bestimmen (engl. Ordinary Least Squares). Eine Einführung findest du in Wooldridge (2013, S. 27 ff.).
+
+```{r eval=FALSE}
+# Run for additional info in the Viewer pane
+info("Ordinary Least Squares")
+```
+
+Bevor du mit der Analyse starten kannst, muss der Datensatz `reg_data.rds` geladen werden. Wir benötigen diesen für die Durchführung der Regressionen. 
+
+Für die bisherige Bearbeitung der Aufgaben hast du den bereits bekannten Datensatz `exp_data.rds` verwendet. Der Datensatz `reg_data.rds` enthält eine Teilmenge der Beobachtungen. Dies wurde durch das Herausfiltern einiger Zeilen des Datensatzes erreicht. Beispielsweise enthält der Datensatz `reg_data.rds` nur noch Beobachtungen für Paare, welche sich innerhalb des Netzwerkes der Dörfer erreichen konnten. Ebenfalls musste die Eigenvektor-Zentralität der jeweiligen Personen größer als null sein. Weitere Informationen findest du in meinem <a href="https://github.com/zeiherfabian/RTutorSozialeNetzwerke" target="_blank">Github Repository</a>.
+
+**Aufgabe:** Lade den Datensatz `reg_data.rds`. Der Code ist bereits gegeben.
+
+```{r "9_1"}
+dat=readRDS("reg_data.rds")
+```
+
+Wir möchten die Daten zur Analyse zunächst auf das Spiel **No Enforcement** beschränken. Dies wird durch den Befehl `filter()` aus dem Paket `dplyr` ermöglicht.
+
+**Aufgabe:** Klicke **check**, um den Datensatz `dat` nach Beobachtungen aus dem Spiel **No Enforcement** zu filtern.
+
+```{r "9_2"}
+dat=filter(dat,game_name=="No Enforcement")
+```
+
+Nun sind alle nötigen Vorbereitungen zur Durchführung der Regression getroffen. Wir werden Regressionen in diesem Problemset anhand der Funktion `felm()` aus dem Paket `lfe` durchführen. Eine kurze Beschreibung der Funktionsweise des Befehls erhältst du in der Infobox.
+
+```{r eval=FALSE}
+# Run for additional info in the Viewer pane
+info("Lineare Regression mit felm()")
+```
+
+Um eine Regression für die Variablen `transfer` und `eigcent_partner` des Datensatzes `dat` durchzuführen, muss zuvor das Paket `lfe` durch den Befehl `library()` geladen werden. Du kannst im Anschluss den Befehl `felm()` nutzen.
+
+**Aufgabe:** Führe die Regression anhand des vorgestellten Regressionsmodells durch. Speichere deine Ergebnisse in `reg_short` ab.
+
+```{r "9_4"}
+# Lade das Paket "lfe".
+library(lfe)
+# Gib deinen Code hier ein:
+
+```
+
+
+Es ist möglich, den Output der Regression mittels des Befehls `summary()` zu betrachten. Um das Ergebnis jedoch optisch ansprechender darzustellen, werden wir im Folgenden den Befehl `stargazer()` verwenden. Dazu muss vorab das Paket `stargazer` geladen werden.
+
+**Aufgabe:** Der Code ist bereits gegeben. Drücke **check**, um ihn zu bestätigen.
+
+```{r "9_5",results='asis'}
+# Lade das Paket "stargazer".
+library(stargazer)
+
+# Zeige die Regressionsergebnisse mithilfe des Befehls "stargazer()" an.
+stargazer(
+  reg_short,
+  type = "html",
+  digits = 3,
+  omit.stat = "ser")
+```
+
+Die Schätzwerte der Parameter $\beta_0$ und $\beta_1$ betragen 81,945 beziehungsweise 4,657. Der geschätzte Steigungsparameter ist positiv. Dies impliziert einen positiven Zusammenhang der Variablen `transfer` und `eigcent_partner`. $\hat\beta_1$ kann wie folgt interpretiert werden: Ist der Unterschied zweier Personen hinsichtlich deren Eigenvektor-Zentralität gleich einem Wert von eins, so erhält die zentralere Person höhere Transfers. Diese liegen ungefähr 4,66 Rupien überhalb der Transfers, welche die Person mit der geringeren Eigenvektor-Zentralität von ihrem Partner erhält. Für weitere Informationen zur Interpretation von Regressionskoeffizienten siehe Wooldridge (2013, S. 44).
+
+Der p-Wert gibt das höchste Signifikanzniveau an, bei dem die Nullhypothese (kein Effekt) nicht verworfen wird (vgl. Wooldridge, 2013, S. 784). Die Schätzungen der Parameter in der Regression $\hat\beta_0$ und $\hat\beta_1$ zeichnen sich beide durch einen p-Wert aus, welcher kleiner als 0,01 ist. Dies bedeutet, dass die Ergebnisse signifikant positiv auf einem Einprozentniveau sind.
+
+Neben der Anzahl der Beobachtungen ist auch das $R^2$ sowie das korrigierte $R^2$ Teil des angezeigten Outputs. $R^2$ gibt Auskunft darüber, welcher Anteil der Variation der abhängigen Variable durch die unabhängigen Variablen erklärt werden kann (vgl. Wooldridge, 2013, S.80). Die Kennzahl kann Werte zwischen null und eins annehmen. Dabei gibt ein Wert nahe eins an, dass ein großer Teil der Variation durch die unabhängige Variable begründet wird. Im Output hat $R^2$ den Wert 0,013. Anhand der Variable `eigcent_partner` wird somit nur ein sehr geringer Teil der Variation erklärt. Würde man dem Regressionsmodell weitere Variablen hinzufügen, könnte das $R^2$ gesteigert werden. Dies sollte jedoch nie die Intension sein, um das Modell mit weiteren Variablen zu ergänzen. Das korrigierte $R^2$ bezieht die Anzahl der unabhängigen Variablen in die Berechnung mit ein. Das Einbringen von zusätzlichen Variablen wird somit "bestraft" (vgl. Wooldridge, 2013, S. 202). Im Output hat das korrigierte $R^2$ einen Wert von 0,012.
+
+Beantworte abschließend folgende Frage:
+
+
+Quiz: Welchen Transfer prognostiziert das Regressionsmodell für eine Person, deren Partner eine Eigenvektor-Zentralität von 0,5 aufweist?
+
+[1]: 84,27 Rupien
+[2]: 79,62 Rupien
+[3]: 86,47 Rupien
+
+```{r eval=FALSE}
+# Run line to answer the quiz above
+answer.quiz("Regressionsoutput")
+```
+
+## Korrelation und Kausalität
+
+Wir haben bereits gesehen, dass wir anhand der durchgeführten Regression signifikante Ergebnisse erlangen. Die Variablen `eigcent_partner` und `transfer` zeichnen sich durch positive Korrelation aus. Es besteht demnach eine statistische Abhängigkeit. Die Variablen verändern sich tendenziell gemeinsam. Doch bedeutet Korrelation der Variablen gleichzeitig, dass ein kausaler Zusammenhang aufgedeckt wurde?
+
+Um diese Frage zu beantworten, muss zunächst der Begriff Kausalität erklärt und abgegrenzt werden. Kausalität beschreibt eine Beziehung zwischen Ursache und Wirkung. Ändert sich der Wert einer Variable, so hat dies auch auf eine weitere Variable Auswirkungen. Das Vorliegen eines kausalen Zusammenhangs bedeutet gleichzeitig, dass Korrelation der Variablen vorliegt. Jedoch gilt dies nicht im Umkehrschluss (vgl. Wooldridge, 2013, S. 12). Es ist möglich, eine statistisch signifikante Korrelation zweier Variablen zu ermitteln, zwischen denen jedoch kein kausaler Zusammenhang besteht. Ein Beispiel hierfür ist in Abbildung 6.1 dargestellt. 
+
+<img src="Korrelation.pdf" style="width: 40%; height: 40%">
+
+*Abbildung 6.1: Korrelation zweier Variablen (Quelle: Eigene Darstellung)*
+
+Ziel unserer Analyse ist, herauszufinden, ob zwischen den Variablen `transfer` und `eigcent_partner` ein kausaler Zusammenhang besteht. Es ist von Interesse zu erfahren, um welchen Faktor sich Transfers einer Person mit steigender Eigenvektor-Zentralität des Partners ändert. 
+
+Nehmen wir einmal an, es wäre möglich gewesen, das Experiment so zu gestalten, dass alle weiteren Faktoren, welche die Transfers beeinflussen, konstant sind. Veränderbar ist nur die Eigenvektor-Zentralität des Partners. Die lateinische Phrase "Ceteris paribus" beschreibt diesen Zustand. Ist es in dieser Situation möglich, eine Korrelation der Variablen nachzuweisen, so bedeutet dies gleichzeitig, dass auch ein kausaler Zusammenhang zwischen beiden vorliegt (vgl. Wooldridge, 2013, S. 12). Somit wäre die bereits durchgeführte Regression ausreichend, um den kausalen Effekt zu bestimmen. 
+Da es im Experiment jedoch nicht möglich war, alle weiteren Einflussfaktoren konstant zu halten, ist die bisher durchgeführte Regression nicht ausreichend, um einen kausalen Zusammenhang zwischen den Variablen `eigcent_partner` und `transfer` aufzudecken. Es ist notwendig, das Regressionsmodell um weitere Variablen zu ergänzen, welche die Höhe der Transfers bestimmten. 
+
+## Kontrollvariablen
+
+Werden relevante Variablen im Regressionsmodell nicht berücksichtigt, kann dies zu Verzerrungen der Regressionsergebnisse führen (engl. Omitted Variable Bias). Dazu muss eine Korrelation mit den erklärenden Variablen im Modell vorliegen (vgl. Wooldridge, 2013, S. 88 f.).
+Das bisher kennengelernte Modell umfasste eine erklärende Variable. Variablen, welche für die Aufstellung des Modells nicht berücksichtigt wurden, sind Teil des Fehlerterms. Liegt keine Korrelation zwischen der erklärenden und der nicht berücksichtigten Variablen vor, so sind die geschätzten Parameter unverzerrt. Die erklärende Variable im Modell ist exogen. Hingegen ist sie endogen, wenn diese mit dem Fehlerterm korreliert. Die geschätzten Parameter sind verzerrt. Die Folge ist, dass kausale Effekte entweder unter- oder überschätzt werden (vgl. Wooldridge, 2013, S. 87).
+
+Bisher haben wir das folgende, kurze Modell betrachtet: 
+
+$$ transfer_{ijt} = \beta_0 + \beta_1 \cdot eigcent\_partner_j + \varepsilon_{ijt} $$
+Um den Effekt nicht berücksichtigter Variablen zu illustrieren, werden wir die Variable `age_partner` im Regressionsmodell inkludieren. Wir prüfen, ob es zu Verzerrungen durch das Fehlen der Variable kommt. Dafür nehmen wir an, dass kausale Effekte durch folgende Gleichung (wahres Modell) ermittelt werden können:
+
+$$ transfer_{ijt} = \beta_0 + \beta_1 \cdot eigcent\_partner_j + \beta_2 \cdot age\_partner_j + \nu_{ijt} $$
+
+Damit ist der Fehlerterm im kurzen Modell gegeben durch:
+
+$$ \varepsilon_{ijt} = \beta_2 \cdot age\_partner_j + \nu_{ijt} $$ 
+
+Die Verzerrung durch ausgelassene Variablen kann durch folgende Formel berechnet werden (vgl. Wooldridge, 2013, S.88 und Greene, 2018, S. 100):
+
+$$ Bias(\tilde{\beta_1}) = \mathbb{E}(\tilde{\beta_1}) - \beta_1 = \beta_2 \cdot Cor(eigcent\_partner,age\_partner) \cdot \frac{ sd(age\_partner)}{sd(eigcent\_partner)}.$$
+
+- $\tilde{\beta_1}$ ist der Steigungsparameter im kurzen Regressionsmodell.
+- $\beta_1$ und $\beta_2$ sind die Steigungsparameter im langen Regressionsmodell.
+
+Wenn die Variablen `eigcent_partner` sowie `age_partner` korrelieren und der Steigungsparameter $\beta_2$ ungleich null ist, bedeutet dies, dass wir bei Durchführung des kurzen Regressionsmodells einen verzerrten Regressionsparameter $\tilde{\beta_1}$ erhalten. Wir überschätzen den kausalen Effekt, falls $Bias(\tilde{\beta_1})$ größer als null ist. Die Verzerrung richtet sich nach oben. Im Fall, dass $Bias(\tilde{\beta_1})$ kleiner als null ist, unterschätzen wir den kausalen Effekt. Die Verzerrung richtet sich nach unten (vgl. Wooldridge, 2013, S. 91).
+
+Abbildung 6.2 stellt den möglichen Zusammenhang der Variablen noch einmal dar. Es kann vermutet werden, dass die Zentralität einer Person auch von deren Alter abhängig ist. 
+
+<img src="Relation der Variablen.pdf" style="width: 40%; height: 40%">
+
+*Abbildung 6.2: Beziehung zwischen den Variablen (Quelle: Eigene Darstellung)*
+
+
+Quiz: Nimm an, die Korrelation der Variablen `eigcent_partner` und `age_partner` ist negativ. Der Steigungsparameter $\beta_2$ ist ebenfalls negativ. Wird der kausale Effekt von `eigcent_partner` auf `transfer` im kurzen Modell über- oder unterschätzt?
+
+[1]: Der kausale Zusammenhang wird überschätzt.
+[2]: Der kausale Zusammenhang wird unterschätzt.
+
+```{r eval=FALSE}
+# Run line to answer the quiz above
+answer.quiz("Verzerrung")
+```
+
+Wir werden im nächsten Schritt eine Regression für das lange Modell durchführen. Anschließend ist der Vergleich der geschätzten Parameter der Modelle möglich.
+
+**Aufgabe:** Führe eine Regression für das lange  Regressionsmodell durch. Fülle dazu die Lücken im Code. Die Ergebnisse werden in `reg_long` gespeichert. Mit dem Befehl `stargazer()` lassen sich anschließend die Schätzungen der Modelle `reg_short` und `reg_long` vergleichen.
+
+```{r "9_6",results='asis'}
+# Gib deinen Code hier ein:
+reg_long=felm(___~___+___, data = dat)
+
+# Die Ergebnisse von "reg_short" und "reg_long" werden in einer Tabelle zusammengefasst.
+stargazer(
+  reg_short, reg_long,
+  type = "html",
+  digits = 3,
+  model.numbers = FALSE,
+  column.labels = c("Short model", "Long model"),
+  omit.stat = "ser")
+```
+
+Beim Vergleich beider Modelle wird ersichtlich, dass $\hat\beta_1$ von 4,657 auf 4,441 sinkt. Der kausale Effekt wurde im kurzen Regressionsmodell überschätzt.
+
+$$ \widehat{Bias(\tilde{\beta_1})} = \hat\beta_2 \cdot \widehat{Cor(eigcent\_partner,age\_partner)} \cdot \frac{\widehat{sd(age\_partner)}}{\widehat{sd(eigcent\_partner)}}$$
+
+**Aufgabe:** Du kannst die Verzerrung auch anhand der Formel berechnen. Fülle dazu die Lücken im Code. 
+
+```{r "9_7"}
+# Speichere den geschätzen Regressionskoeffizienten für "Beta 2" in "hat_beta2" ab.
+hat_beta2 = coef(reg_long)[[3]]
+
+# Berechne die Korrelation der Variablen "eigcent_partner" und "age_partner".
+cor_eig_age = cor(dat$eigcent_partner, dat$___, use = "complete.obs")
+
+# Berechne die Standardabweichung von "age_partner". 
+sd_age = sd(dat$age_partner, na.rm = TRUE)
+
+# Berechne die Standardabweichung von "eigcent_partner".
+sd_eig = sd(dat$___, na.rm = TRUE)
+
+# Berechne die geschätzte Verzerrung
+bias = hat_beta2 * cor_eig_age * sd_age / ___
+
+hat_beta2
+cor_eig_age
+sd_age
+sd_eig
+bias
+```
+
+
+## Exercise 7: Soziale Netzwerke und Vertragserfüllung
+
+Das Ausmaß der Kooperation der Partner kann im Experiment anhand der Transfers und der Konsumabweichung bestimmt werden. Liegt ein hohes Maß an Kooperation vor, kompensieren die Teilnehmer Einkommensausfälle gegenseitig.
+
+In diesem Kapitel ist es unser Ziel herauszufinden, welchen Einfluss Netzwerkmaße, genauer die kennengelernte Distanz sowie die Eigenvektor-Zentralität, auf Transfers und Konsumabweichung im Experiment haben. Der Fokus wird dabei auf den Spielen **No Enforcement** und **Enforcement** liegen. Wir werden prüfen, ob den Netzwerkmaßen in den Spielen eine unterschiedlich hohe Bedeutung zukommt. Am Ende des Kapitels wird die Frage beantwortet, ob die Kooperation der Partner auch unter fehlender Durchsetzung der Verträge gesichert sein kann. 
+
+Die im Artikel durchgeführte Analyse wird im ersten Teil des Kapitels behandelt. Im zweiten Teil wird die Robustheit der Ergebnisse überprüft.
+
+## Exercise 7.1: Analyse 
+
+Die Analyse umfasst zunächst die Variable `transfer`. Der Fokus auf die Konsumabweichung erfolgt zu einem späteren Zeitpunkt. 
+
+## Transfer 
+
+Um mit der Bearbeitung der Aufgaben zu starten, ist es notwendig, den Datensatz `reg_data.rds` zu laden. Da das Spiel **No Enforcement, Savings** nicht Gegenstand der Analyse ist, werden dessen Beobachtungen aus dem Datensatz herausgefiltert. 
+
+**Aufgabe:** Drücke **check**, um den Code zu bestätigen.
+
+```{r "11_1"}
+# Lade den Datensatz "reg_data.rds".
+dat=readRDS("reg_data.rds") %>%
+
+# Das Spiel "No Enforcement, Savings" wird herausgefiltert.
+filter(game_name!="No Enforcement, Savings")
+```
+
+Wir betrachten den Einfluss der Netzwerkmaße für jedes der Spiele separat. Das ermöglicht, Unterschiede zwischen den Spielen zu erkennen. Dazu verwenden wir folgende Regressionsgleichung:
+
+$$ transfer_{ijt} = \alpha_0 + \alpha_1 \cdot distance_{ij} +\alpha_2 \cdot eigcent\_partner_j + \alpha_3 \cdot eigcent_i + \epsilon_{ijt}  \quad (7.1)$$
+
+Die Gleichung beschreibt einen linearen Zusammenhang der Variablen `eigcent_partner`, `eigcent` sowie `distance` mit der abhängigen Variable `transfer`. Die Komponenten der Gleichung sind nachfolgend erläutert:
+
+- $transfer_{ijt}$ ist der Transfer, den Person $i$ in Runde $t$ des Spiels tätigte. Den Transfer erhielt der jeweilige Partner $j$.
+- $alpha_0$ ist die Konstante. $alpha_1$, $alpha_2$ und $alpha_3$ sind die Steigungsparameter der Gleichung.
+- Die Variable `distance` beschreibt die Distanz (soziale Nähe), `eigcent` und `eigcent_partner` sind die Eigenvektor-Zentralitäten der Personen.
+- $\epsilon_{ijt}$ ist die Störgröße.
+
+**Aufgabe:** Führe eine lineare Regression anhand der Gleichung für jedes der Spiele separat durch. Fülle dazu die Lücken im Code.
+
+```{r "11_2",results='asis'}
+# Führe die Regression für das Spiel "Enforcement" durch. 
+game1=felm(transfer~+distance+eigcent_partner+eigcent,data = subset(dat,game_name==___))
+
+# Führe die Regression für das Spiel "No Enforcement" durch. 
+game2=felm(transfer~+distance+eigcent_partner+eigcent,data = subset(dat,game_name==___))
+
+# Mit dem Befehl "stargazer" werden die Ergebnisse der Regressionen dargestellt.
+stargazer(
+  game1, game2,
+  type = "html",
+  digits = 3,
+  model.numbers = FALSE,
+  column.labels = c("Enf.", "No Enf."),
+  omit.stat = "ser")
+```
+
+Die geschätzten Parameter $\hat \alpha_2$ und $\hat \alpha_3$ sind in beiden Spielen positiv. Laut dem Regressionsoutput nehmen Transfers mit steigender Eigenvektor-Zentralität beider Partner zu. $\hat \alpha_1$ ist in beiden Spielen negativ. Transfers sinken somit mit steigender Distanz. Im Spiel **Enforcement** ist der geschätzte Parameterwert jedoch nicht signifikant (p-Wert > 0,1). 
+
+Der Regressionsoutput lässt vermuten, dass ein Strukturbruch zwischen den Spielen besteht. Den Netzwerkmaßen kommt in den jeweiligen Spielen eine unterschiedlich hohe Bedeutung zu. Wir werden in der nächsten Aufgabe die Differenz der geschätzten Parameterwerte berechnen. Die Werte des Spiels **Enforcement** sollen von denen des Spiels **No Enforcement** abgezogen werden.
+
+**Aufgabe:** Der Code ist bereits gegeben und berechnet die Differenz der geschätzten Parameter der Spiele.
+
+```{r "11_3"}
+# Berechne die Differenz der geschätzten Regressionskonstanten.
+diff_alpha_hat_0 = coef(game2)[[1]]-coef(game1)[[1]]
+
+# Berechne die Differenz der geschätzten Werte von "alpha 1".
+diff_alpha_hat_1 = coef(game2)[[2]]-coef(game1)[[2]]
+
+# Berechne die Differenz der geschätzten Werte von "alpha 2".
+diff_alpha_hat_2 = coef(game2)[[3]]-coef(game1)[[3]]
+
+# Berechne die Differenz der geschätzten Werte von "alpha 3".
+diff_alpha_hat_3 = coef(game2)[[4]]-coef(game1)[[4]]
+
+# Zeige die berechneten Werte an.
+diff_alpha_hat_0
+diff_alpha_hat_1
+diff_alpha_hat_2
+diff_alpha_hat_3
+```
+
+
+### Strukturbruchmodell
+
+Wir erstellen zunächst eine binäre Variable, welche die betrachteten Spiele eindeutig identifiziert. Diese soll den Wert eins erhalten, wenn die Beobachtung aus dem Spiel **No Enforcement** stammt. Die benötigte Information findet sich in der Variable `game_name`. Wir werden diese verwenden, um die Variable `game2` zu bestimmen.
+
+Mit dem Befehl `mutate()` kann die Variable `game2` erstellt und dem Datensatz `dat` hinzugefügt werden. Neben dem Befehl `mutate()` beinhaltet das Paket `dplyr` den Befehl `if_else(test,yes,no)`. Dieser macht möglich, anhand einer Bedingung die Werte der Variable `game_name` in zwei Gruppen einzuteilen. Da unser Ziel ist, eine binäre Variable zu erstellen, wird die Zahl eins gewählt, falls die Bedingung zutrifft. Wird jedoch die Bedingung nicht erfüllt, so soll die Variable `game2` den Wert null erhalten.
+
+**Aufgabe:** Fülle die Lücken im Code.
+
+```{r "11_4"}
+# Erstelle die Variable "game2".
+dat=mutate(dat,game2=if_else(game_name==___,1,___))
+```
+
+Wir haben nun alle Voraussetzungen getroffen, um eine Regression nach folgender Gleichung durchzuführen:
+
+$$ transfer_{ijt} = \alpha_0 + \alpha_1 \cdot distance_{ij} +\alpha_2 \cdot eigcent\_partner_j + \alpha_3 \cdot eigcent_i + \\\\ \beta_0 \cdot game2 + \beta_1 \cdot distance_{ij} \cdot game2 + \beta_2 \cdot eigcent\_partner_j \cdot game2 + \beta_3 \cdot eigcent_i \cdot game2 + u_{ijt} \quad (7.2)$$
+
+Die Gleichung (7.2) ermöglicht, Unterschiede der Spiele hinsichtlich der Effekthöhe der Netzwerkmaße aufzudecken. 
+
+Angenommen, wir möchten den Transfer im Spiel **Enforcement** anhand der dargestellten Gleichung voraussagen. Da in diesem Spiel die binäre Variable `game2` den Wert null hat, verkürzt sich die Gleichung. Sie ist nun identisch zu Gleichung (7.1). Daher müssen die geschätzten Parameter $\hat \alpha_0$ bis $\hat \alpha_3$ für dieses Spiel nach Gleichung (7.1) und (7.2) identisch sein. 
+
+Im Spiel **No Enforcement** entspricht die Variable `game2` dem Wert eins. $\beta_0$ bis $\beta_3$ beschreiben die Differenz der Effekthöhe in den Spielen. Durch Addition der entsprechenden Parameter lässt sich der insgesamte Effekt einer Variable im Spiel **No Enforcement** errechnen. 
+
+Die Störgröße im Modell ist $u_{ijt}$.
+
+*Hinweis: Für weitere Informationen zum Strukturbruchmodell siehe von Auer (2013, S. 341 ff.).*
+
+Es ist grundsätzlich möglich, Variablen für die Interaktionsterme zu erstellen. Dies wäre für die Ermittlung von $\hat \beta_1$, $\hat \beta_2$ und $\hat \beta_3$ notwendig. In der Infobox erfährst du, dass es noch eine zweite Möglichkeit gibt, die Regression anhand Gleichung (7.2) durchzuführen. Es ist dafür nicht notwendig, weitere Variablen zu generieren.
+
+```{r eval=FALSE}
+# Run for additional info in the Viewer pane
+info("Strukturbruchmodell mit felm()")
+```
+
+**Aufgabe:** Der Code zur Durchführung der Regression nach Gleichung (7.2) ist bereits gegeben. Drücke **check**, um den Code zu bestätigen.
+
+```{r "11_6",results='asis'}
+# Führe die Regression nach Gleichung (7.2) durch. Die Ergebnisse werden in "reg1" abgespeichert.
+reg1=felm(transfer~distance*game2+eigcent_partner*game2+eigcent*game2,data = dat)
+
+# Mit dem Befehl "stargazer()" wird das Ergebnis der Regression dargestellt.
+stargazer(
+  reg1,
+  type = "html",
+  digits = 3,
+  omit.stat = "ser")
+```
+
+Beantworte anhand des Regressionsoutputs folgende Fragen:
+
+
+Quiz: Welche Voraussage macht das Modell im Spiel **Enforcement** bezüglich der Transfers, wenn die Distanz um den Wert eins erhöht wird?
+
+[1]: Die Transfers sinken um ca. 0,24 Rupien.
+[2]: Die Transfers sinken um ca. 2,03 Rupien.
+[3]: Die Transfers sinken um ca. 2,27 Rupien.
+
+```{r eval=FALSE}
+# Run line to answer the quiz above
+answer.quiz("Strukturbruchmodell 1")
+```
+
+
+Quiz: Welche Voraussage macht das Modell im Spiel **No Enforcement** bezüglich der Transfers bei gleicher Veränderung der Distanz?
+
+[1]: Die Transfers sinken um ca. 0,24 Rupien.
+[2]: Die Transfers sinken um ca. 2,03 Rupien.
+[3]: Die Transfers sinken um ca. 2,27 Rupien.
+
+```{r eval=FALSE}
+# Run line to answer the quiz above
+answer.quiz("Strukturbruchmodell 2")
+```
+
+
+### Cluster-robuste Standardfehler
+
+Bisher haben wir implizit unterstellt, dass die Fehlerterme identisch sowie unabhängig voneinander verteilt sind. Trifft diese Annahme zu, würde R die Standardfehler der geschätzten Koeffizienten korrekt berechnen. Sind die Fehlerterme innerhalb Gruppen, beziehungsweise Cluster, jedoch voneinander abhängig, ist eine Anpassung des Codes notwendig. Es können Cluster-robuste Standardfehler ermittelt werden, welche eine Korrelation der Fehlerterme innerhalb der Cluster erlaubt (vgl. Stock und Watson, 2011, S. 406). Zwischen den Fehlertermen verschiedener Cluster soll jedoch keine Korrelation bestehen. 
+
+Chandrasekhar et al. (2018) bestimmten Cluster-robuste Standardfehler anhand der Variable `vill_game`. Jedes Dorf und Spiel bildeten ein Cluster, in welchem die Korrelation der Fehlerterme erlaubt war. Da die Analyse zwei Spiele umfasst und insgesamt 34 Dörfer für das Experiment ausgewählt wurden, können 68 Cluster anhand der Variable gebildet werden.
+
+```{r eval=FALSE}
+# Run for additional info in the Viewer pane
+info("Cluster-robuste Standardfehler mit felm()")
+```
+
+**Aufgabe:** Führe die Regression erneut anhand Gleichung (7.2) durch. Ermittle Cluster-robuste Standardfehler mit der Variable `vill_game`. Fülle die Lücken im Code.
+
+```{r "11_8",results='asis'}
+# Führe die Regression nach Gleichung (7.2) durch. Robuste Standardfehler werden anhand der Variable "vill_game" gebildet.
+reg2=felm(transfer~distance*game2+eigcent_partner*game2+eigcent*game2|0|0|___, data = dat)
+
+# Mit dem Befehl "stargazer()" wird das Ergebnis der Regressionen "reg1" und "reg2" dargestellt.
+stargazer(
+  reg1,reg2,
+  type = "html",
+  digits = 3,
+  omit.stat = "ser",
+  add.lines = list(c("Clustered?","No","Yes")))
+```
+
+Der Befehl `stargazer` ermöglicht, die Regression mit und ohne Verwendung Cluster-robuster Standardfehler zu vergleichen. Bei deren Verwendung sind diese höher. Dies beeinflusst auch die Höhe der p-Werte.
+
+### Fixe Effekte
+
+Im Regressionsmodell ist $\alpha_0$ die Konstante. Diese gibt die Höhe der Transfers einer Person an, falls der Wert der erklärenden Variablen dem Wert null gleicht. Bisher wurde angenommen, dass die Höhe dieser Transfers für jede der Personen (`id`) identisch ist. Die Homogenität der Personen wurde unterstellt. Unterschiedliche Fähigkeiten, personenspezifische Charakteristika sowie Persönlichkeiten sprechen jedoch eher dafür, dass zwischen den Teilnehmern unbeobachtete Heterogenität besteht, welche sich auf die Höhe der Transfers auswirkt (vgl. Brüderl und Ludwig, 2015, S. 327). Wir werden aus diesem Grund fixe Effekte für jeden Teilnehmer im Regressionsmodell inkludieren. Für jede der Personen wird eine binäre Variable erstellt. Damit kann die Heterogenität der Personen erfasst werden. Diese bezieht sich weder auf eines der beiden Spiele noch auf eine Runde im Experiment. 
+
+Unser Ziel ist es, die kausalen Effekte der unabhängigen Variablen zu bestimmen. Korreliert die individuelle Heterogenität mit den unabhängigen Variablen, führt dies zu Verzerrungen. Um die Effekte der unabhängigen Variablen konsistent zu schätzen, ist es deshalb von Bedeutung, fixe Effekte im Regressionsmodell zu berücksichtigen. 
+
+**Aufgabe:** Ermittle zunächst die Anzahl der Personen (`id`) mittels des Befehls `n_distinct()` im Datensatz `dat`.
+
+```{r "11_9"}
+# Ermittle die Anzahl der Personen.
+```
+
+Es wäre möglich, für jede der Personen eine Dummyvariable zu erstellen. Zur bisher bekannten Regressionsgleichung müssten somit 638 Variablen (639 Personen abzüglich einer bisher vorhandenen Konstante) hinzugefügt werden. Dies würde sich jedoch als sehr zeitaufwändig gestalten. Wir werden daher die Funktion `felm()` nutzen, welche es erlaubt, fixe Effekte im Regressionsmodell zu integrieren, ohne eine Vielzahl an Variablen im Voraus erstellen zu müssen. Du erhältst weitere Informationen in der Infobox.
+
+```{r eval=FALSE}
+# Run for additional info in the Viewer pane
+info("Fixe Effekte mit felm()")
+```
+
+Neben fixen Effekten für die Teilnehmer am Experiment (`id`) verwendeten Chandrasekhar et al. (2018) fixe Effekte anhand der Variablen `time`, `order` und `surveyor`. Die Variable `time` gibt die Anzahl der insgesamt gespielten Runden an, `order` beschreibt die Reihenfolge der Spiele. Im Regressionsmodell wird somit auf runden- sowie reihenfolgespezifische Effekte kontrolliert. Zusätzlich wurde anhand der Variable `surveyor` auf Heterogenität hinsichtlich der Person, welche die Durchführung des Experiments betreute, geprüft.
+
+**Aufgabe:** Füge dem Regressionsmodell fixe Effekte anhand der Variablen `id`, `time`, `order` und `surveyor` hinzu. Fülle dazu die Lücken im Code.
+
+```{r "11_11",results='asis'}
+# Integriere fixe Effekte im Regressionsmodell.
+reg3=felm(transfer~distance*game2+eigcent_partner*game2+eigcent*game2|___+___+___+___|0|vill_game, data = dat)
+
+# Mit dem Befehl "stargazer()" wird das Ergebnis der Regressionen "reg1", "reg2" und "reg3" dargestellt.
+stargazer(
+  reg1,reg2,reg3,
+  type = "html",
+  digits = 3,
+  omit.stat = "ser",
+  add.lines = list(c("Clustered?","No","Yes","Yes"),
+                   c("Fixed Effects?","No","No","Yes")))
+```
+
+Auffallend am Regressionsoutput ist, dass dieser hinsichtlich $\hat \alpha_3$ keine Werte enthält. R bestimmt für die Variable `eigcent` keinen geschätzten Parameterwert. Begründet werden kann dies damit, dass personenfixe Effekte sowie die Variable `eigcent` kollinear sind.
+
+```{r eval=FALSE}
+# Run for additional info in the Viewer pane
+info("Kollinearität")
+```
+
+Persönliche Charakteristika, sowie unterschiedliche Fähigkeiten und Persönlichkeiten sind Faktoren, welche die Höhe der personenfixen Effekte determinieren. Diese haben auch einen Einfluss auf die Eigenvektor-Zentralität der Person. Es stellt sich die Frage, ob personenfixe Effekte und die Eigenvektorzentralität der Person inhaltlich dasselbe messen. Aus diesem Grund gibt R für den Parameter $\alpha_3$ keinen Schätzwert an. 
+
+### Kontrollvariablen
+
+Werden relevante Faktoren im Modell nicht berücksichtigt, kann dies zu Verzerrungen der geschätzten Parameter führen. Das ist dann der Fall, wenn erklärende Variablen im Modell mit den nicht berücksichtigten Faktoren korrelieren.
+
+In Netzwerken entstehen Verbindungen vor allem zwischen Personen, welche sich hinsichtlich ihrer Eigenschaften gleichen. Dies wird auch als soziale Homophilie bezeichnet (vgl. McPherson et al., 2001, S. 415). Jackson (2010, S. 436) betont aus diesem Grund, dass Verzerrungen durch ausgelassene Variablen zwar nicht nur in der Analyse von Netzwerken auftreten, dort jedoch besonders akut sein können. 
+
+Chandrasekhar et al. (2018) verwendeten eine Reihe an Kontrollvariablen, welche die Ähnlichkeit der Personen zu bestimmten Merkmalen erfassten. Diese bezogen sich auf die Kaste, das Geschlecht, die Überdachung des Wohnhauses, die geografische Distanz sowie auf die Bildung der Personen. Die Interaktionen der Variablen mit `game2` wurden ebenfalls ermittelt. Eine genaue Beschreibung der verwendeten Kontrollvariablen findest du in der Infobox. 
+
+```{r eval=FALSE}
+# Run for additional info in the Viewer pane
+info("Kontrollvariablen")
+```
+
+**Aufgabe:** Der Code führt die Regression unter Berücksichtigung der Kontrollvariablen durch. Drücke **check**, um ihn zu bestätigen.
+
+```{r "11_12",results='asis'}
+# Speichere die Kontrollvariablen in "controls" ab.
+caste=c("samecaste","samecaste_m","samecasteXgame2","samecaste_mXgame2")
+
+sex=c("samesex","samesex_m","samesexXgame2","samesex_mXgame2")
+
+roof=c("sameroof","sameroof_m","sameroofXgame2","sameroof_mXgame2")
+
+gps=c("gps_dist","gps_dist_m","gps_distXgame2","gps_dist_mXgame2")
+
+education=c("same_educ","same_educXgame2")
+
+controls=c(caste,sex,roof,gps,education)
+
+# Lade das Paket "glueformula".
+library(glueformula)
+
+# Der Befehl "gf()" erlaubt, eine Formel für das Modell zu erstellen, welche alle Kontrollvariablen enthält.
+form_reg4=gf(transfer ~ distance*game2+eigcent_partner*game2+eigcent*game2+{controls}|id+time+order+surveyor|0|vill_game)
+
+# Führe die Regression für das Modell durch.
+reg4=felm(data=dat,form_reg4)
+
+# Mit dem Befehl "stargazer()" wird das Ergebnis der Regressionen "reg1", "reg2", "reg3" und "reg4" dargestellt.
+stargazer(
+  reg1,reg2,reg3,reg4,
+  type = "html",
+  digits = 3,
+  omit.stat = "ser",
+  omit = c(controls),
+  add.lines = list(c("Clustered?","No","Yes","Yes","Yes"),
+                   c("Fixed Effects?","No","No","Yes","Yes"),
+                   c("Controls?","No","No","No","Yes")))
+```
+
+Im Spiel **Enforcement** kann kein signifikanter Effekt der Netzwerkmaße nachgewiesen werden. Die Höhe der Transfers richtete sich demnach nicht nach der Netzwerkposition der Partner. 
+Im Spiel **No Enforcement** hatte die Netzwerkposition jedoch erheblichen Einfluss auf die Höhe der Transfers. Entfiel die externe Durchsetzung der Verträge, sanken Transfers für jede Einheit der Distanz um 3,34 Rupien. Das Ergebnis ist für ein Niveau von 10 Prozent signifikant. Somit war die Abweichung für Paare, welche sich durch soziale Nähe auszeichneten, nur sehr gering. Für die Eigenvektor-Zentralität des Partners war in diesem Fall ein Anstieg der Transfers um 3,55 Rupien je Einheit voraussagbar. Im Regressionsoutput hat $\hat \beta_3$ den Wert -0,908. Es kann jedoch kein statistisch signifikanter Zusammenhang nachgewiesen werden (p-Wert > 0,1).
+
+## Konsumabweichung
+
+Zur Analyse der Konsumabweichung kann eine Regression nach demselben Muster durchgeführt werden. Lediglich die abhängige Variable wird im Modell durch `cons_dev` ersetzt. Da die Eigenvektor-Zentralität der betrachteten Person kollinear mit den personenfixen Effekten ist, werden wir diese aus dem Regressionsmodell entfernen. Die Interaktion der Variable `eigcent` mit `game2` bleibt jedoch Bestandteil der Gleichung. Diese wird im Folgenden durch `eigcentXgame2` beschrieben. 
+
+**Aufgabe:** Der Code ist bereits gegeben. Drücke **check**, um diesen auszuführen.
+
+```{r "11_13",results='asis'}
+# Erstelle eine Formel für das Modell.
+form_cons_dev=gf(cons_dev ~ distance*game2+eigcent_partner*game2+eigcentXgame2+{controls}|id+time+order+surveyor|0|vill_game)
+
+# Führe die Regression für das Modell durch.
+reg_cons_dev=felm(data=dat,form_cons_dev)
+
+# Stelle das Ergebnis der Regression dar.
+stargazer(
+  reg_cons_dev,
+  type = "html",
+  digits = 3,
+  omit.stat = "ser",
+  omit = c(controls))
+```
+
+Entfiel die externe Durchsetzung der Verträge, nahm die Konsumabweichung der Personen im Experiment zu. Für jede Einheit der Distanz stieg die Kosumabweichung um ca. 2,57 Rupien. Der dazugehörige p-Wert ist kleiner als 0,05. $\hat \beta_2$ beträgt -2,253 und ist signifikant für das Einprozentniveau. Die Zentralität des Partners trug demnach dazu bei, die Konsumabweichung im Spiel **No Enforcement** zu reduzieren. Bezüglich der Interaktion aus `game2` und `eigcent` wurden keine signifikanten Ergebnisse ermittelt (p-Wert > 0,1).
+Für das Spiel **Enforcement** muss hervorgehoben werden, dass die Kosumabweichung mit der Eigenvektor-Zentralität des Partners steigt. Das Ergebnis ist signifikant für das Einprozentniveau.
+
+*Hinweis: Du findest die ermittelten Ergebnisse in Chandrasekhar et al. (2018), Seite 62 ("Table 2").*
+
+## Exercise 7.2: Robustheitscheck
+
+In diesem Kapitel möchten wir die Robustheit der im letzten Kapitel ermittelten Ergebnisse überprüfen. Hierzu werden Durchschnittswerte für Distanz und Eigenvektor-Zentralität im Regressionsmodell berücksichtigt. Dies ermöglicht die Differenzierung heterogener Effekte für Personen, welche im Allgemeinen gut oder schlecht vernetzt sind. Es wird deutlich, ob die im letzten Kapitel identifizierten Effekte hierdurch verfälscht wurden.
+
+**Aufgabe:** Drücke **check**, um den Datensatz zu laden. Das Spiel **No Enforcement, Savings** wird zudem aus dem Datensatz herausgefiltert.
+
+```{r "12_1"}
+# Lade den Datensatz "reg_data.rds".
+dat=readRDS("reg_data.rds") %>%
+
+# Das Spiel "No Enforcement, Savings" wird herausgefiltert.
+filter(game_name!="No Enforcement, Savings")
+```
+
+Wir werden das Modell für `transfer` und `cons_dev` um die Kontrollvariablen `distance_avg` sowie `eigcent_avg` erweitern. Diese sind nachfolgend kurz beschrieben:
+
+- `distance_avg` beschreibt die durchschnittliche Distanz der betrachteten Person zu jedem anderen Teilnehmer im Dorf. 
+- `eigcent_avg` berechnet sich als Durchschnittswert der Eigenvektor-Zentralität jedes möglichen Partners der Person im Dorf.
+
+Die Interaktion der Variablen mit `game2` wird ebenfalls im Modell erfasst. Die Effekthöhe der Variablen kann somit in den Spielen differieren.
+
+**Aufgabe:** Drücke **check**, um die Kontrollvariablen zu bestätigen. Im Anschluss wird die Regression für Konsumabweichung und Transfers durchgeführt.
+
+```{r "12_2",results='asis'}
+# Bestimme die zu verwendenden Kontrollvariablen.
+caste=c("samecaste","samecaste_m","samecasteXgame2","samecaste_mXgame2")
+
+sex=c("samesex","samesex_m","samesexXgame2","samesex_mXgame2")
+
+roof=c("sameroof","sameroof_m","sameroofXgame2","sameroof_mXgame2")
+
+gps=c("gps_dist","gps_dist_m","gps_distXgame2","gps_dist_mXgame2")
+
+education=c("same_educ","same_educXgame2")
+
+avg_dist_cent=c("distance_avg","distance_avgXgame2","eigcent_avg","eigcent_avgXgame2")
+
+controls_rob=c(caste,sex,roof,gps,education,avg_dist_cent)
+
+# Führe die Regression für die Konsumabweichung durch.
+form_cons_dev1=gf(cons_dev ~ distance*game2+eigcent_partner*game2+eigcentXgame2+{controls_rob}|id+time+surveyor+order|0|vill_game)
+
+reg_cons_dev1=felm(data=dat,form_cons_dev1)
+
+# Führe die Regression für die Transfers durch.
+form_trans1=gf(transfer ~ distance*game2+eigcent_partner*game2+eigcentXgame2+{controls_rob}|id+time+surveyor+order|0|vill_game)
+
+reg_trans1=felm(data=dat,form_trans1)
+
+# Stelle die Ergebnisse mittels des Befehls "stargazer()" dar.
+stargazer(
+  reg_cons_dev1,reg_trans1,
+  type = "html",
+  digits = 3,
+  omit.stat = "ser",
+  omit = c(controls_rob))
+```
+
+Die Höhe der geschätzten Parameter ändert sich nur geringfügig durch die Inklusion der Durchschnittswerte für Distanz und Eigenvektor-Zentralität in den jeweiligen Spielen. Dies gilt auch für das Signifikanzniveau der Ergebnisse. Für die Analyse der Transfers ist der geschätzte Parameterwert für die Interaktion aus `game2` und `distance` jedoch nicht mehr signifikant (p-Wert > 0,1).
+
+*Hinweis: Du findest die ermittelten Ergebnisse in Chandrasekhar et al. (2018), Seite 64 ("Table 3").*
+
+## Exercise 8: Sparen
+
+In diesem Kapitel möchten wir abschließend den Fokus auf das Spiel **No Enforcement, Savings** richten. In diesem war es den Teilnehmern erlaubt, Ersparnisse zu bilden, welche in den folgenden Runden des Spiels konsumiert werden konnten. Mit angespartem Geld war es den Teilnehmern somit möglich, Einkommensausfälle selbst zu kompensieren, wodurch die Abhängigkeit von den Transfers des Partners sank. Wir möchten herausfinden, in welchen Situationen die Teilnehmer die Möglichkeit nutzten, Geld zu sparen. Im Anschluss werden wir die Bedeutung der Netzwerkmaße in den Spielen **No Enforcement, Savings** und **No Enforcement** vergleichen. Die Betrachtung wird sich auf die Transfers und die Konsumabweichung beziehen.
+
+**Aufgabe:** Lade zunächst den Datensatz `reg_data.rds`. Aus dem Datensatz wird das Spiel **Enforcement** entfernt. Drücke hierfür **check**.
+
+```{r "13_1"}
+# Lade den Datensatz "reg_data.rds".
+dat=readRDS("reg_data.rds") %>%
+
+# Das Spiel "Enforcement" wird herausgefiltert.
+filter(game_name!="Enforcement")
+```
+
+**Aufgabe:** Die Variable `savings` gibt die Höhe der Ersparnisse an, welche die Person `id` nach Beendigung einer Runde besaß. Berechne den Durchschnittswert der Variable. Beachte, dass das Argument `na.rm = TRUE` gewählt werden muss, da der Datensatz Beobachtungen aus dem Spiel `No Enforcement` enthält. Die Bildung von Ersparnissen war hier nicht gestattet.
+
+```{r "13_2"}
+# Gib deinen Code hier ein:
+```
+
+Das Ergebnis zeigt, dass die Teilnehmer die Möglichkeit im Spiel nutzten, Ersparnisse für spätere Runden zu bilden. Diese entsprachen ca. 18 Prozent des durchschnittlichen Einkommens (125 Rupien).
+
+
+Quiz: Wurde das Spiel nach der Runde fortgesetzt, blieb der angesparte Betrag konstant. Das Geld konnte jedoch nicht mehr konsumiert beziehungsweise transferiert werden, wenn das Spiel beendet wurde. Wie hoch war die Nettoverzinsung des ersparten Geldes? Beziehe in deine Überlegungen mit ein, dass der Erwartungswert der Rundenanzahl sechs betrug (vgl. Chandrasekhar et al., 2018, S. 49).
+
+[1]: -16,67 Prozent
+[2]: 16,67 Prozent
+[3]: -20 Prozent
+
+```{r eval=FALSE}
+# Run line to answer the quiz above
+answer.quiz("Nettozinssatz")
+```
+
+
+Es stellt sich die Frage, in welchen Situationen die Teilnehmer Geld ansparten. Es kann vermutet werden, dass die Höhe der zurückgelegten Geldbeträge auch von der Netzwerkposition der Partner abhing. Im Artikel prüften Chandrasekhar et al. (2018) diese Vermutung anhand einer Regression. Die Variable `savings` wurde als abhängige Variable gewählt. Teil der unabhängigen Variablen waren `distance`, `eigcent` sowie `eigcent_partner`. Fixe Effekte bestimmten die Forscher anhand der Variablen `time`, `surveyor` und `order`. Personenfixe Effekte konnten nicht berücksichtigt werden, da jede Person das Spiel **No Enforcement, Savings** nur mit einem Partner bestritt. Dies machte jedoch die Analyse anfälliger für mögliche Störfaktoren (vgl. Chandrasekhar et al., 2018, S. 65). Kontrollvariablen zu Kaste, Geschlecht, Überdachung des Hauses, GPS-Entfernung sowie Bildung waren ebenfalls Teil der Regressionsgleichung.
+
+**Aufgabe:** Bestätige den Code durch Drücken von **check**.
+
+```{r "13_3",results='asis'}
+# Bestimme die Kontrollvariablen.
+caste=c("samecaste","samecaste_m")
+
+sex=c("samesex","samesex_m")
+
+roof=c("sameroof","sameroof_m")
+
+gps=c("gps_dist","gps_dist_m")
+
+education=c("same_educ")
+
+controls_savings=c(caste,sex,roof,gps,education)
+
+# Bestimme die Formel der Regressionsgleichung.
+form_savings=gf(savings ~ distance+eigcent_partner+eigcent+{controls_savings}|time+surveyor+order|0|0)
+
+# Füge die Formel in "felm()" ein.
+reg_savings=felm(data=dat,form_savings)
+
+# Stelle die Ergebnisse dar.
+stargazer(
+  reg_savings,
+  type = "html",
+  digits = 4,
+  omit.stat = "ser", 
+  omit = c(controls_savings))
+```
+
+Zwischen der Distanz der Partner und den Ersparnissen lässt sich ein positiver Zusammenhang nachweisen. Das Modell prognostiziert einen Anstieg der Ersparnisse um ca. 0,64 Rupien, wenn die Distanz der Personen um eine Einheit erhöht wird. Das Ergebnis ist für das Zehnprozentniveau signifikant. Bezüglich der Eigenvektor-Zentralitäten der Personen lassen sich keine signifikanten Ergebnisse ermitteln (p-Wert > 0,1).
+
+*Hinweis: Du findest die ermittelten Ergebnisse in Chandrasekhar et al. (2018), Seite 75 ("Table B2").*
+
+Abschließend werden wir anhand einer Regression die Bedeutung der Netzwerkmaße für Transfers und Konsumabweichung in diesem Spiel untersuchen. Es stellt sich die Frage, ob sich deren Einfluss durch die Bildung von Ersparnissen im Vergleich zum Spiel **No Enforcement** ändert. 
+
+Wie im letzten Kapitel wird hierfür ein Strukturbruchmodell verwendet. Neben den Netzwerkmaßen sind Kontrollvariablen für Kaste, Geschlecht, Überdachung, GPS-Entfernung und Bildung Bestandteile der Regressionsgleichung. Die Interaktionen mit der Variable `game3` decken zudem auf, ob hinsichtlich der Spiele ein Strukturbruch besteht. Fixe Effekte werden für `id`, `time`, `surveyor` und `order` gebildet.
+
+**Aufgabe:** Der Code ist bereits gegeben. Drücke daher **check**, um diesen auszuführen.
+
+```{r "13_4",results='asis'}
+# Bestimme die Kontrollvariablen.
+caste=c("samecaste","samecaste_m","samecasteXgame3","samecaste_mXgame3")
+
+sex=c("samesex","samesex_m","samesexXgame3","samesex_mXgame3")
+
+roof=c("sameroof","sameroof_m","sameroofXgame3","sameroof_mXgame3")
+
+gps=c("gps_dist","gps_dist_m","gps_distXgame3","gps_dist_mXgame3")
+
+education=c("same_educ","same_educXgame3")
+
+controls=c(caste,sex,roof,gps,education)
+
+# Regression für Transfers
+form_trans2=gf(transfer ~ distance*game3+eigcent_partner*game3+eigcentXgame3+{controls}|id+time+surveyor+order|0|vill_game)
+
+reg_trans2=felm(data=dat,form_trans2)
+
+# Regression für Konsumabweichung
+form_cons_dev2=gf(cons_dev ~ distance*game3+eigcent_partner*game3+eigcentXgame3+{controls}|id+time+surveyor+order|0|vill_game)
+
+reg_cons_dev2=felm(data=dat,form_cons_dev2)
+
+# Stelle die Ergebnisse dar.
+stargazer(
+  reg_cons_dev2,reg_trans2,
+  type = "html",
+  digits = 3,
+  omit.stat = "ser", 
+  omit = c(controls))
+```
+
+Die Ergebnisse zeigen, dass die Einführung von Ersparnissen die Bedeutung von Distanz und Eigenvektor-Zentralität des Partners nicht differenzierbar verändert. Die Interaktionen der jeweiligen Variablen mit `game3` sind nicht signifikant (p-Wert > 0,1). Hervorzuheben ist, dass dies nicht für die Eigenvektor-Zentralität der betrachteten Person gilt. Es lassen sich signifikante Veränderungen hinsichtlich der Transfers feststellen. 
+
+*Hinweis: Du findest die ermittelten Ergebnisse in Chandrasekhar et al. (2018), Seite 76 ("Table B4").*
+
+## Exercise 9: Schlussfolgerung
+
+Das Problemset beschäftigte sich mit drei Versicherungsspielen, welche im Rahmen eines Experiments durchgeführt wurden. Wir haben untersucht, ob soziale Netzwerke fehlende Vertragsdurchsetzung kompensieren können. Nach der Vorstellung des Experiments konnten wir feststellen, dass die Kooperation der Partner nicht in jedem der Spiele identisch war. Fehlte die externe Kontrolle, nutzten die Teilnehmer die Möglichkeit zur Abweichung von bestehenden Verträgen. Dies hatte zur Folge, dass der durchschnittliche Transfer signifikant sank. Die Konsumabweichung nahm daraufhin zu. Durch unsere Analyse konnten wir jedoch ermitteln, dass diese Effekte nicht für jedes Paar zu erwarten waren. Bei Paaren, welche sich durch soziale Nähe auszeichneten, waren die Unterschiede nur sehr gering. Die Einhaltung der Verträge musste somit nicht zwingend durch Dritte überwacht werden. Die Wichtigkeit der externen Durchsetzung nahm jedoch mit steigender Distanz der Personen zu. Es wurde ebenfalls veranschaulicht, wie sich die Zentralität des Partners auf Transfer und Konsumabweichung auswirkten. War die Zentralität des Partners gering, sanken die Transfers. Daraufhin nahm die Konsumabweichung zu. Profiteure der externen Durchsetzung waren somit weniger zentrale sowie sozial voneinander entfernte Individuen. 
+
+Kapitel acht beschäftigte sich näher mit dem Spiel **No Enforcement, Savings**. Es wurde erfasst, dass sich die Teilnehmer durch risikoaverses Verhalten auszeichneten. Trotz drohendem Verlust des Geldes wurde gespart.
+Wir untersuchten, wie sich die Einführung von Ersparnissen ohne externe Durchsetzung der Verträge auswirkte. Dabei stellten wir fest, dass sich die Effekthöhen der Eigenvektor-Zentralität des Partners und der Distanz nicht differenzierbar veränderten. Anhand der Variablen ergab sich somit auch keine Veränderung der Transfers und der Konsumabweichung. 
+
+Am Ende des Problemsets stellt sich die Frage, welche Bedeutung die Ergebnisse für uns besitzen. Da Verträge gerichtlich durchsetzbar sind, kann davon ausgegangen werden, dass die Netzwerkposition der Vertragspartner keine Auswirkung auf das Ausmaß der Erfüllung hat. Dies gilt allerdings nur, wenn ein Nachweis für einen Vertragsschluss vorliegt. Mündliche Absprachen können somit zu Problemen führen. Um das Risiko vor Vertragsabschluss einzuschätzen, empfiehlt es sich in diesem Fall, auch die Positionen im sozialen Netzwerk zu berücksichtigen.
+
+Das im Experiment ermittelte Netzwerk war ungewichtet. Somit wurde auch nicht darauf eingegangen, wie stark Verbindungen zwischen Personen sind. Es wäre interessant zu betrachten, wie lange Verbindungen zwischen Personen bereits bestehen und ob hierdurch die Kooperation erhöht werden kann. Dies könnte eine Fragestellung für zukünftige Forschung sein. 
+
+Ich hoffe, du hattest viel Spaß bei der Bearbeitung der Aufgaben!
+
+**Aufgabe:** Drücke **check**, um deine erlangten Auszeichnungen abzurufen. 
+
+```{r "14_1"}
+awards()
+```
+
+## Exercise 10: Zusatzaufgabe
+
+Diese Aufgabe beschäftigt sich mit der Darstellung "Figure 3" auf Seite 57 des behandelten Artikels. Es wird aufgezeigt, dass die Replikation andere Ergebnisse liefert, als im Artikel dargestellt. Die Aufgabe ist optional. Du kannst sie daher auch überspringen. Hast du dennoch Interesse daran, die Aufgabe zu lösen, empfehle ich dir, kurz das beschriebene Schaubild zu betrachten. Den Link zum Artikel findest du <a href="https://www.aeaweb.org/articles?id=10.1257/app.20150057" target="_blank">hier</a>.
+
+**Aufgabe:** Zuerst muss der Datensatz `exp_data.rds` geladen werden. Klicke daher auf **check**, um den Code auszuführen. 
+
+```{r "15_1"}
+# Lade den Datensatz "exp_data.rds".
+dat=readRDS("exp_data.rds")
+```
+
+Im Experiment wurden Spielpaare nicht zufällig gebildet. Da nur 46 Prozent aller Haushalte befragt wurden, ist es denkbar, dass die ermittelte Distanz zwischen den Partnern größer als die tatsächliche war (vgl. Chandrasekhar et al., 2018, S. 54 ff.). Daher war das Ziel der Forscher, Paare zu bilden, welche sich durch eine hohe Distanz der Partner zueinander auszeichneten. "Figure 3" vergleicht eine zufällige mit der tatsälichen Einteilung der Paare anhand der Distanz. Zur Demonstration wurden die Dörfer 14, 40 und 77 ausgewählt.
+ 
+Für die Replikation der Darstellung ist es zunächst von Bedeutung, einige Zeilen des Datensatzes `dat` herauszufiltern. Für jede der Personen aus den Dörfern 14, 40 und 77 soll eine Beobachtung pro Spiel aus dem Datensatz herausgefiltert werden. Für jedes Paar ist die Distanz demnach doppelt erfasst.
+
+**Aufgabe:** Zunächst wird der Datensatz `vil` erstellt. Der Befehl `filter()` wird verwendet, um die entsprechenden Zeilen des Datensatzes herauszufiltern. Nutze den Befehl `dim()` um zu prüfen, wie viele Zeilen der Datensatz `vil` hat. 
+
+```{r "15_2"}
+# Erstelle den Datensatz "vil".
+vil=filter(dat,village==14|village==40|village==77,round==1)
+# Ermittle die Dimensionen des Datensatzes.
+```
+
+Der Datensatz `vil` verfügt über 180 Zeilen (20 Personen pro Dorf, 3 Spiele, 3 Dörfer).
+
+Der Vergleich zwischen zufälliger und tatsächlicher Einteilung der Paare erfolgte anhand der empirischen Verteilungsfunktion. Diese gibt den Anteil der Beobachtungen an, welche höchstens eine bestimmte Ausprägung besitzen (vgl. Sibbertsen und Lehne, 2021, S. 21).
+
+Du kannst die empirische Verteilungsfunktion der Variable `distance` für die einzelnen Dörfer (`village`) mithilfe des Befehls `stat_ecdf()` erstellen. Eine Ermittlung der empirischen Verteilungsfunktion für die zufällige Einteilung der Paare (orange gestrichelte Linie) ist jedoch nicht möglich. Dazu müsste beispielsweise eine Distanzmatrix für die Personen eines Ortes vorliegen.
+
+**Aufgabe:** Fülle die Lücken im bereits gegebenen Code.
+
+```{r "15_3",fig.width=13}
+ggplot(data = vil,aes(___))+
+  ___+
+  scale_x_continuous(breaks = 1:7)+
+  scale_y_continuous(breaks = seq(0, 1, by = .2))+
+  labs(x="Distance",y="Fraction of all pairings")+
+  facet_wrap(~___)
+```
+
+Beim Vergleich der Darstellung "Figure 3" (blaue Linie) mit den hier dargestellten Schaubildern wird ersichtlich, dass diese nicht übereinstimmen. 
+
+Abschließend kann geprüft werden, ob sich die Darstellung im Artikel auf einzelne Spiele bezieht. Dies kann jedoch auch verneint werden. 
+
+**Aufgabe:** Der Code ist bereits gegeben. Drücke **check**, um diesen auszuführen.
+
+```{r "15_4",fig.width=13}
+ggplot(data = vil,aes(distance))+
+  stat_ecdf(aes(colour=game_name),alpha=0.5)+
+  scale_x_continuous(breaks = 1:7)+
+  scale_y_continuous(breaks = seq(0, 1, by = .2))+
+  labs(x="Distance",y="Fraction of all pairings")+
+  scale_colour_discrete("Game")+
+  facet_wrap(~village)
+```
+
+In Dorf 40 wurden in allen drei Spielen Paare gebildet, bei denen die Distanz zwischen den einzelnen Teilnehmern den Wert zwei hatte. Dies steht jedoch im Widerspruch zu "Figure 3". Laut der Darstellung sollte es keine Paare geben, bei denen dies vorlag. Somit kann die Darstellung durch keines der Spiele allein sowie deren Kombinationen erklärt werden.
+
+*Hinweis: Die Verwendung des Datensatzes `reg_data.rds` liefert die selben Ergebnisse.*
+
+Da ich keinen Code gefunden habe, welcher die Erstellung der Darstellung dokumentiert, habe ich versucht, die Autoren des Artikels schriftlich zu kontaktieren, um aufzuklären, warum es hier zu Abweichungen kommt. Die Anfrage blieb leider unbeantwortet.
+
+## Exercise 11: Quellverzeichnis
+
+### Literaturverzeichnis
+
+Banerjee, A., Chandrasekhar, A., Duflo, E., Jackson M. (2013): The Diffusion of Microfinance. Science, 341 (6144), 1236498, https://doi.org/10.1126/science.1236498.
+
+Bonacich, P. (2007): Some Unique Properties of Eigenvector Centrality. Social Networks, 29(4), S. 555-564, https://doi.org/10.1016/j.socnet.2007.04.002.
+
+Brüderl, J. and Ludwig, V. (2015): Fixed-Effects Panel Regression. In: Best, H. and Wolf, C., Eds., The Sage Handbook of Regression Analysis and Causal Inference, Thousand Oaks: Sage, S. 327-357.
+
+Chandrasekhar A., Kinnan, C., Larreguy, H. (2014): Social Networks as Contract Enforcement: Evidence from a Lab Experiment in the Field. NBER Working Paper No. w20259, https://ssrn.com/abstract=2460578.
+
+Chandrasekhar A., Kinnan, C., Larreguy, H. (2018): Social Networks as Contract Enforcement: Evidence from a Lab Experiment in the Field. American Economic Journal: Applied Economics, 10(4), S. 43-78.
+
+Chandrasekhar, A., Lewis, R. (2012): Econometrics of Sampled Networks. http://www.hss.caltech.edu/~mshum/gradio/papers/khaislides.pdf. Abgerufen am 18.04.2022
+
+Chiang, A., Wainwright, K., Nitsch, H. (2011): Mathematik für Ökonomen - Grundlagen, Methoden und Anwendungen. München: Franz Vahlen.
+
+Friedman, J. W. (1971): A non-cooperative equilibrium for supergames. The Review of Economic Studies, 38(1), 1-12.
+
+Greene, W. H. (2018): Econometric analysis. 8th Edition, Harlow: Pearson Education.
+
+Gujarati, D., Porter, D. (2009): Essentials of Econometrics. 4th Edition, New York City: McGraw-Hill/Irwin.
+
+Jackson, M. (2010): Social and Economic Networks. Princeton: Princeton University Press.
+
+Mann, H., Whitney, D. (1947): On a Test of Whether one of Two Random Variables is Stochastically Larger than the Other. The Annals of Mathematical Statistics, 18(1), S. 50–60.
+
+McPherson, M., Smith-Lovin, L., Cook, J. M. (2001): Birds of a feather: Homophily in social networks. Annual review of sociology, 27(1), S. 415-444.
+
+Nachar, N. (2008). The Mann-Whitney U: A Test for Assessing Whether Two Independent Samples Come from the Same Distribution. Tutorials in Quantitative Methods for Psychology, 4(1), S. 13–20.
+          
+Schlittgen, R. (2012): Einführung in die Statistik: Analyse und Modellierung von Daten. 12. Auflage, München: Oldenbourg Verlag.
+
+Sibbertsen, P., Lehne, H. (2021): Statistik - Einführung für Wirtschafts- und Sozialwissenschaftler. 3. Auflage, Berlin: Springer Gabler.
+
+Stock, J., Watson, M. (2011): Introduction to Econometrics. 3rd Edition, Harlow: Pearson Education.
+
+von Auer, L. (2013): Ökonometrie: eine Einführung. 6. Auflage, Heidelberg/Berlin: Springer Gabler.
+
+Wilcoxon, F. (1945): Individual Comparisons by Ranking Methods. Biometrics Bulletin, 1, S. 80–83.
+
+Wooldridge, J. M. (2013): Introductory Econometrics: A Modern Approach. 5th Edition, Boston, MA: Cengage.
+
+### R-Pakete
+
+Amestoy, P. et al. (2022): igraph: Network Analysis and Visualization. R package version 1.2.11. https://cran.r-project.org/web/packages/igraph/index.html.
+
+Gaure, S. (2021): lfe: Linear Group Fixed Effects. R package version 2.8-7. https://cran.r-project.org/web/packages/lfe/index.html.
+
+Hlavac, M. (2022): stargazer: Well-Formatted Regression and Summary Statistics Tables. R package version 5.2.2. https://cran.r-project.org/web/packages/stargazer/.
+
+Kranz, S. (2020): RTutor: Interactive R Problem Sets. R package version 2020.11.25. https://github.com/skranz/Rtutor.
+
+Kranz, S. (2021): glueformula: String interpolation to build regression formulas. R package version 0.1.0. https://github.com/skranz/glueformula.
+
+Pedersen, T. L. (2020): patchwork: The Composer of Plots. R package version 1.1.1. https://cran.r-project.org/web/packages/patchwork/index.html.
+
+Revelle, W. (2022): psych: Procedures for Psychological, Psychometric, and Personality Research. R package version 2.2.3. https://cran.r-project.org/web/packages/psych/index.html.
+
+Wickham, H. et al. (2022): ggplot2: Create Elegant Data Visualisations Using the Grammar of Graphics. R package version 3.3.6. https://cran.r-project.org/web/packages/ggplot2/index.html.
+
+Wickham, H., François, R., Henry, L., Müller, K. (2022): dplyr: A Grammar of Data Manipulation. R package version 1.0.9. https://cran.r-project.org/web/packages/dplyr/index.html.

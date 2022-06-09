@@ -1,0 +1,264 @@
+Diese Datei enthält den Code zur Replikation des verwendeten Datensatzes.
+
+## Verwendete Pakete
+
+In einem ersten Schritt werden die verwendeten Pakete installiert und geladen.
+```{r}
+install.packages("haven")
+library(haven)
+install.packages("dplyr")
+library(dplyr)
+install.packages("tidyr")
+library(tidyr)
+```
+
+## Datensatz
+
+Um den Datensatz zu modifizieren, muss der ursprüngliche Datensatz eingelesen werden. 
+```{r}
+dat=read_dta("~/Desktop/Masterarbeit/Daten/20150057_data.dta")
+```
+
+## Eindeutige Identifikation der Individuen und deren Partner
+
+Für die eindeutige Identifikation von Individuen erhalten Personen sowie deren Spielpartner eine eindeutige Identifikationsnummer. Die Variable `id` bezieht sich dabei auf die Identifikationsnummer der betrachteten Person, `id_partner` ist die Identifikationsnummer des Partners.
+```{r}
+dat=dat%>%
+  mutate(id=individualid*100+village)%>%
+  mutate(id_partner=hhid_partner*100+pid_partner)
+```
+
+## Charakteristika auf Haushaltsebene
+
+Insgesamt werden Hausdächer, unter denen die Personen im Experiment leben, in sechs Kategorien eingeteilt. Für jede Kategorie ist im ursprünglichen Datensatz eine binäre Variable zu finden. Um diese zusammenzufassen, wird die Variable `rooftype` erstellt. Bezogen auf den Partner der betrachteten Person, wird die Variable `rooftype_par` erstellt. Es bleibt zu beachten, dass die Reihenfolge, in der die betrachteten Variablen durchgegangen werden, eine Rolle für das Ergebnis spielt. In aufsteigender Reihenfolge (0-5) entspricht das Ergebnis nicht der Variable aus dem Artikel.
+```{r}
+#Dach der betrachteten Person
+dat=
+  mutate(dat,rooftype = case_when(
+    rooftype5_censHH==1~5,
+    rooftype4_censHH==1~4,
+    rooftype3_censHH==1~3,
+    rooftype2_censHH==1~2,
+    rooftype1_censHH==1~1,
+    rooftypeoth_censHH==1~0,
+    TRUE ~ NA_real_
+    )) 
+
+#Dach des Partners
+dat=
+  mutate(dat,rooftype_par = case_when(
+    rooftype5_censHH_partner==1~5,
+    rooftype4_censHH_partner==1~4,
+    rooftype3_censHH_partner==1~3,
+    rooftype2_censHH_partner==1~2,
+    rooftype1_censHH_partner==1~1,
+    rooftypeoth_censHH_partner==1~0,
+    TRUE ~ NA_real_
+    )) 
+```
+
+## Charakteristica auf individueller Ebene 
+
+Eine binäre Variable für das Geschlecht beider Partner wird erstellt. Dabei steht die Zahl eins für männlich und null für weiblich.
+```{r}
+ dat=dat %>%
+  mutate(male=if_else(sex=="M",1,0))%>%
+  mutate(male_partner=if_else(sex_partner=="M",1,0))
+```
+
+Die Zentralitätsmaße beider Partner werden im nächsten Chunk normalisiert. Zuvor werden jedoch die ursprünglichen Daten mit dem Zusatz "_raw" abgespeichert.
+```{r}
+dat=dat%>%
+# Speichern der ursprünglichen Variablen
+  mutate(eigcent_raw=eigcent)%>%
+  mutate(eigcent_partner_raw=eigcent_partner)%>%
+  mutate(eigcent_avg_raw=eigcent_avg)%>%
+
+# Normalisierung der Variablen
+  mutate(eigcent=eigcent/sd(eigcent,na.rm=TRUE))%>%
+  mutate(eigcent_partner=eigcent_partner/sd(eigcent_partner,na.rm=TRUE))%>%
+  mutate(eigcent_avg=eigcent_avg/sd(eigcent_avg,na.rm=TRUE))
+
+```
+
+Die Variablen `age_expt` und `age_expt_partner` (expt=Experiment) werden umbenannt.
+```{r}
+dat=rename(dat,age=age_expt,age_partner=age_expt_partner)
+```
+
+Im nächsten Chunk wird eine Variable erstellt, die den Transfer des Siegers an den Verlierer in einer Runde beschreibt. Verfügt die betrachtete Person (`id`) über das hohe Einkommen in dieser Runde, so erhält die Variable den Wert des Transfers zum Partner. Im gegenteiligen Fall wird kein Wert eingetragen.
+```{r}
+dat=mutate(dat,transfer=if_else(income==250,transfer_to_partner,NA_real_))
+```
+
+Im folgenden Chunk wird die Konsumabweichung vom Durchschnitt  (`cons_dev`) bestimmt.
+```{r}
+dat=mutate(dat,cons_dev=abs(consumption-mean(consumption,na.rm=TRUE)))
+```
+
+## Charakeristika auf Partnerebene
+
+Die Variable `rooftype_diff` kann dabei helfen, Unterschiede zwischen den beiden Partnern hinsichtlich deren Dächer festzustellen. Es wird zusätzlich die Varible `rooftype_diff01` erstellt. Es handelt sich hierbei um eine Variable, welche den Wert eins annimmt, wenn sich die Partner hinsichtlich der Überdachung des Wohnhauses unterscheiden.
+```{r}
+dat=dat%>%
+  mutate(rooftype_diff=abs(rooftype-rooftype_par))%>%
+  mutate(rooftype_diff01=if_else(rooftype_diff==0,0,1))
+```
+
+Leben beide Partner unter demselben Dachtyp, wird dies mit der Variable `sameroof` angezeigt. Die Variable `sameroof_m` gibt an, ob für mindestens einen der beiden Partner ein fehlender Wert vorliegt.
+```{r}
+dat=dat%>%
+  mutate(sameroof=1-rooftype_diff01)%>%
+  mutate(sameroof=if_else(is.na(sameroof),0,sameroof))%>%
+  mutate(sameroof_m=if_else(is.na(rooftype)|is.na(rooftype_par),1,0))
+```
+
+Sind beide Partner in der gleichen Kaste, so wird dies mithilfe der Variable `samecaste` angezeigt. Im Fall, dass beide Partner nicht der gleichen Kaste angehören, hat die Variable den Wert null. Die Variable `samecaste_m` zeigt fehlende Werte binär an.
+```{r}
+dat=dat%>%
+  mutate(samecaste= if_else(caste_hilo==caste_hilo_partner,1,0))%>%
+  mutate(samecaste= if_else(is.na(caste_hilo)|is.na(caste_hilo_partner),0,samecaste))%>%
+  mutate(samecaste_m= if_else(is.na(caste_hilo)|is.na(caste_hilo_partner),1,0))
+```
+
+Die Variable `samesex` gibt an, ob beide Partner das gleiche Geschlecht haben. Fehlende Werte werden durch die Variable `samesex_m` angegeben.
+```{r}
+dat=dat%>%
+  mutate(samesex=if_else(sex==sex_partner,1,0))%>%
+  mutate(samesex=if_else(sex==""|sex_partner=="",0,samesex))%>%
+  mutate(samesex_m=if_else(sex==""|sex_partner=="",1,0))
+```
+
+Die Variable `same_educ` stellt fest, ob beide Personen den gleichen Bildungsgrad haben. Die Variable `same_educ_m` sagt aus, ob ein fehlender Wert für mindestens eine der Personen vorliegt.
+```{r}
+dat=dat%>%
+  rename(education=education_expt,education_partner=education_expt_partner)%>%
+  mutate(same_educ=if_else(education==education_partner,1,0))%>%
+  mutate(same_educ=if_else(is.na(education)|is.na(education_partner),0,same_educ))%>%
+  mutate(same_educ_m=if_else(is.na(education)|is.na(education_partner),1,0))
+```
+
+Die Distanz "999" entspricht keinem Wert. Im folgendem Chunk wird der Wert der Variable entfernt.
+```{r}
+dat$distance = as.numeric(dat$distance)
+
+dat=mutate(dat,distance = if_else(distance==999,NA_real_,distance))
+```
+
+## Variablen zu den Spielen
+
+Die Spiele werden den Zahlen eins bis drei zugeordnet.
+```{r}
+dat=mutate(dat,game = case_when(
+    game==2~1,
+    game==3~2,
+    game==4~3,
+    TRUE ~ NA_real_))
+```
+
+Die Variablen `game1`, `game2` und `game3` werden im nächsten Chunk erstellt.
+```{r}
+dat=dat%>%
+  mutate(game1=if_else(game==1,1,0))%>%
+  mutate(game1=if_else(is.na(game),0,game1))%>%
+  mutate(game2=if_else(game==2,1,0))%>%
+  mutate(game2=if_else(is.na(game),0,game2))%>%
+  mutate(game3=if_else(game==3,1,0))%>%
+  mutate(game3=if_else(is.na(game),0,game3))
+```
+
+Die Variable `game_name` hilft dabei, die Spiele einfacher anhand deren Namen zu identifizieren. Diese wird im nächsten Chunk erstellt.
+```{r}
+dat=dat%>%
+  mutate(game_name=case_when(
+    game==1~"Enforcement",
+    game==2~"No Enforcement",
+    game==3~"No Enforcement, Savings",
+    TRUE ~ NA_character_
+  ))
+```
+
+## Interaktionsvariablen
+
+Im nächsten Chunk wird die Interaktion mehrerer Variablen mit den binären Variablen für die  Spiele **No Enforcement** und **No Enforcement, Savings** bestimmt.
+```{r}
+# "No Enforcement"
+dat=dat%>%
+# Gleiche Kaste
+  mutate(samecasteXgame2=samecaste*game2)%>%
+  mutate(samecaste_mXgame2=samecaste_m*game2)%>%
+# Gleiches Geschlecht
+  mutate(samesexXgame2=samesex*game2)%>%
+  mutate(samesex_mXgame2=samesex_m*game2)%>%
+# Gleiche Überdachung
+  mutate(sameroofXgame2=sameroof*game2)%>%
+  mutate(sameroof_mXgame2=sameroof_m*game2)%>%
+# Distanz in Kilometer
+  mutate(gps_distXgame2=gps_dist*game2)%>%
+  mutate(gps_dist_mXgame2=gps_dist_m*game2)%>%
+# Gleiche Bildung
+  mutate(same_educXgame2=same_educ*game2)%>%
+  
+# "No Enforcement, Savings"
+  
+# Gleiche Kaste
+  mutate(samecasteXgame3=samecaste*game3)%>%
+  mutate(samecaste_mXgame3=samecaste_m*game3)%>%
+# Gleiches Geschlecht
+  mutate(samesexXgame3=samesex*game3)%>%
+  mutate(samesex_mXgame3=samesex_m*game3)%>%
+# Gleiche Überdachung
+  mutate(sameroofXgame3=sameroof*game3)%>%
+  mutate(sameroof_mXgame3=sameroof_m*game3)%>%
+# Distanz in Kilometer
+  mutate(gps_distXgame3=gps_dist*game3)%>%
+  mutate(gps_dist_mXgame3=gps_dist_m*game3)%>%
+# Gleiche Bildung
+  mutate(same_educXgame3=same_educ*game3)
+```
+
+Im folgenden Chunk wird erneut die Interaktion mehrerer Netzwerkmaße mit den Spielen **No Enforcement** und **No Enforcement, Savings** ermittelt.
+```{r} 
+dat=dat%>%
+# Interaktion der Distanz
+  mutate(game2Xdistance=distance*game2)%>%
+  mutate(game3Xdistance=distance*game3)%>%
+# Interaktion der Eigenvektor-Zentralität einer Person
+  mutate(eigcentXgame2=eigcent*game2)%>%
+  mutate(eigcentXgame3=eigcent*game3)%>%
+# Interaktion der Eigenvektor-Zentralität des Partners
+  mutate(eigcent_pXgame2=eigcent_partner*game2)%>%
+  mutate(eigcent_pXgame3=eigcent_partner*game3)%>%
+  
+# Interaktion der Durchschnittswerte 
+  mutate(distance_avgXgame2=distance_avg*game2)%>%
+  mutate(distance_avgXgame3=distance_avg*game3)%>%
+  mutate(eigcent_avgXgame2=eigcent_avg*game2)%>%
+  mutate(eigcent_avgXgame3=eigcent_avg*game3)
+```
+
+## Generierung der Datensätze
+
+Die Daten werden im nächsten Chunk nach `id`,`game`und `round` sortiert. Zeilen, welche keine Werte hinsichtlich der Variable `id` enthalten, werden gelöscht.
+```{r} 
+dat=dat%>%
+  arrange(id,game,round)%>%
+  drop_na(id)
+```
+
+Die modifizierten Daten werden als `exp_data.rds` gespeichert. 
+```{r} 
+saveRDS(dat,"~/Desktop/Masterarbeit/Daten/exp_data.rds")
+```
+
+Im nächsten Chunk wird die Variable `sample` generiert. Diese hat den Wert eins, wenn Zentralitäts- und Distanzmaße der Personen vorliegen. Es muss außerdem eingetragen sein, wer die Befragung durchführte.
+```{r}
+ dat=mutate(dat,sample=if_else(reachable==1&eigcent_partner>0&eigcent>0&surveyor>0,1,0))
+```
+
+Der Datensatz `reg_data.rds` wird gespeichert.
+```{r} 
+dat=filter(dat,sample==1)
+
+saveRDS(dat,"~/Desktop/Masterarbeit/Daten/reg_data.rds")
+````

@@ -1,0 +1,11 @@
+Package: RTutorSozialeNetzwerke
+Type: Package
+Title: RTutor problem set SozialeNetzwerke
+Version: 0.1
+Date: 2022-09-06
+Author: Fabian Zeiher
+Maintainer: Fabian Zeiher <fabian.zeiher@uni-ulm.de>
+Description: RTutor problem set SozialeNetzwerke
+License: Problem set content: Creative Commons (CC BY-SA)
+	 Package code: GPL >= 2.0
+Depends: RTutor, ggplot2, igraph, dplyr, psych, glueformula, lfe, stargazer, patchwork
